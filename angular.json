@@ -28,7 +28,9 @@
               "src/assets/bootstrap.rtl.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {

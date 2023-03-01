@@ -19,3 +19,10 @@
 body {
   font-family: 'iranyekan';
 }
+
+@media screen and (min-width: 992px){
+  .dropdown-menu[data-bs-popper] {
+    left: 0;
+    right: unset;
+  }
+}
