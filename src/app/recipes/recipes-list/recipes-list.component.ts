@@ -1,5 +1,4 @@
-import { EventEmitter } from '@angular/core';
-import { Component, Output } from '@angular/core';
+import { Component, Output, EventEmitter  } from '@angular/core';
 import { Recipe } from '../recipe.model';
 
 @Component({
