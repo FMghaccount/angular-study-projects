@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mt-5 mt-md-0">
   <div class="col-xs-12">
     <img [src]="recipe.imagePath" alt="" class="img-responsive image">
   </div>
@@ -8,10 +8,11 @@
     <h1 class="lh-base">{{ recipe.name }}</h1>
     <div class="btn-group" role="group" aria-label="َActions List">
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn btn-primary dropdown-toggle" appDropdown data-bs-toggle="dropdown"
+          aria-expanded="false">
           مدیریت <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu btn-group-detail-component">
           <li class="dropdown-item"><a href="#" class="text-decoration-none">افزودن به لیست خرید</a></li>
           <li class="dropdown-item"><a href="#" class="text-decoration-none">ویرایش</a></li>
           <li class="dropdown-item"><a href="#" class="text-decoration-none">حذف</a></li>

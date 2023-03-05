@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "course-project-basics": {
+    "course-project": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/course-project-basics",
+            "outputPath": "dist/course-project",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -29,7 +29,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/bootstrap.bundle.min.js"
+              
             ]
           },
           "configurations": {
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "course-project-basics:build:production"
+              "browserTarget": "course-project:build:production"
             },
             "development": {
-              "browserTarget": "course-project-basics:build:development"
+              "browserTarget": "course-project:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "course-project-basics:build"
+            "browserTarget": "course-project:build"
           }
         },
         "test": {
