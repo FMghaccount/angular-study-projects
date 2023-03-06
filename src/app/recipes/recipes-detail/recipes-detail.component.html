@@ -1,11 +1,11 @@
 <div class="row mt-5 mt-md-0">
-  <div class="col-xs-12">
-    <img [src]="recipe.imagePath" alt="" class="img-responsive image">
+  <div class="col-12">
+    <img [src]="recipe.imagePath" alt="" class="img-fluid image">
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-12 d-flex align-items-center justify-content-between">
-    <h1 class="lh-base">{{ recipe.name }}</h1>
+<div class="row mt-4">
+  <div class="col-12 d-flex align-items-center justify-content-between">
+    <h3 class="lh-base pe-2">{{ recipe.name }}</h3>
     <div class="btn-group" role="group" aria-label="َActions List">
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-primary dropdown-toggle" appDropdown data-bs-toggle="dropdown"
@@ -21,13 +21,18 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row mt-3">
   <div class="col-xs-12">
     {{ recipe.description }}
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col-xs-12">
-    {{ recipe.imagePath }}
+<div class="row mt-3">
+  <div class="col-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action" style="cursor: pointer"
+        *ngFor="let ingredient of recipe.ingredients let i = index">
+        {{ ingredient.name }} - (تعداد: {{ ingredient.amount }})
+      </li>
+    </ul>
   </div>
-</div> -->
+</div>
