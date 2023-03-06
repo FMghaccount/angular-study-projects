@@ -1,4 +1,4 @@
-import { Recipe } from './../recipe.model';
+import { Recipe } from '../../shared/models/recipe.model';
 import { Component, Input } from '@angular/core';
 
 @Component({

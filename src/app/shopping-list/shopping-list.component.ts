@@ -1,13 +1,13 @@
 import { ShoppingListService } from './../shared/services/shopping-list.service';
 import { Component } from '@angular/core';
 
-import { Ingredient } from '../shared/ingredient.model';
+import { Ingredient } from '../shared/models/ingredient.model';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css'],
-  providers: [ShoppingListService]
+  // providers: [ShoppingListService]
 })
 export class ShoppingListComponent {
   ingredients: Ingredient[] = [];

@@ -1,4 +1,4 @@
-import { Ingredient } from './../../shared/ingredient.model';
+import { Ingredient } from '../../shared/models/ingredient.model';
 import { ShoppingListService } from './../../shared/services/shopping-list.service';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
@@ -15,8 +15,8 @@ export class ShoppingEditComponent {
   constructor(private shoppingListService: ShoppingListService) { }
 
   onAddIngredients() {
-    if (this.ingredientName && this.amountInput.nativeElement.value) {
-      this.ingredient = new Ingredient(this.ingredientName, +this.amountInput.nativeElement.value)
+    if (this.ingredientName && this.amountInput.nativeElement.value && this.amountInput.nativeElement.value > 0) {
+      this.ingredient = new Ingredient(this.ingredientName, this.amountInput.nativeElement.value)
       this.shoppingListService.addIngredients(this.ingredient)
     }
     else return
