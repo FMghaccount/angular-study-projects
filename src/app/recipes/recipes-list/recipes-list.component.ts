@@ -10,11 +10,11 @@ import { Recipe } from '../../shared/models/recipe.model';
 export class RecipesListComponent {
   recipes: Recipe[] = []
 
-  @Output() selectedRecipe = new EventEmitter<Recipe>();
+  // @Output() selectedRecipeId = new EventEmitter<number>();
 
-  onRecipeSelected(recipe: Recipe) {
-    this.selectedRecipe.emit(recipe)
-  }
+  // onRecipeSelected(recipeId: number) {
+  //   this.selectedRecipeId.emit(recipeId)
+  // }
 
   constructor(private recipeService: RecipeService) { }
 

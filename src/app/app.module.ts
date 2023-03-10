@@ -14,6 +14,7 @@ import { DropdownDirective } from './shared/directives/dropdown.directive'
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { RecipesStartComponent } from './recipes/recipes-start/recipes-start.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     ShoppingListComponent,
     ShoppingEditComponent,
     DropdownDirective,
-    NotFoundComponent
+    NotFoundComponent,
+    RecipesStartComponent
   ],
   imports: [
     BrowserModule,

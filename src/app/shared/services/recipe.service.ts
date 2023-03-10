@@ -7,7 +7,8 @@ import { Ingredient } from '../models/ingredient.model';
   providedIn: 'root'
 })
 export class RecipeService {
-  selectedRecipe = new EventEmitter<Recipe>();
+  // selectedRecipe = new EventEmitter<Recipe>();
+  selectedRecipeId = new EventEmitter<number>();
 
   private recipes: Recipe[] = [
     new Recipe('اولین دستور پخت',
@@ -29,6 +30,10 @@ export class RecipeService {
 
   getRecipes() {
     return this.recipes.slice();
+  }
+
+  getRecipe(id: number) {
+    return this.recipes[id];
   }
 
   addToIngredientsFromRecipeDetail(ingredient: Ingredient[]) {

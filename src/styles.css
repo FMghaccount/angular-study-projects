@@ -20,6 +20,10 @@ body {
   font-family: 'iranyekan';
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .pull-left {
   float: left;
 }

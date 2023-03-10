@@ -5,9 +5,11 @@
     <app-recipes-list></app-recipes-list>
   </div>
   <div class="col-md-6 col-lg-7">
-    <app-recipes-detail *ngIf="selectedRecipe; else noRecipe" [recipe]="selectedRecipe"></app-recipes-detail>
+    <!-- <app-recipes-detail *ngIf="selectedRecipe; else noRecipe" [recipe]="selectedRecipe"></app-recipes-detail>
     <ng-template #noRecipe>
       <p class="mt-3 mt-md-0">دستور پختی انتخاب نشده است</p>
-    </ng-template>
+    </ng-template> -->
+    <!-- <router-outlet name="recipes-detail"></router-outlet> -->
+    <router-outlet></router-outlet>
   </div>
 </div>

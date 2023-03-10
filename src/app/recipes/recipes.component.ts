@@ -9,7 +9,8 @@ import { Component } from '@angular/core';
   providers: [RecipeService]
 })
 export class RecipesComponent {
-  selectedRecipe: Recipe;
+  // selectedRecipe: Recipe;
+  // selectedRecipe: Recipe;
   // onSelectRecipe(recipe) {
   //   this.selectedRecipe = recipe;
   //   console.log(recipe);
@@ -18,8 +19,8 @@ export class RecipesComponent {
   constructor(private recipeService: RecipeService) { }
 
   ngOnInit() {
-    this.recipeService.selectedRecipe.subscribe((recipe: Recipe) => {
-      this.selectedRecipe = recipe;
-    })
+    // this.recipeService.selectedRecipeId.subscribe((recipe: Recipe) => {
+    //   this.selectedRecipe = recipe;
+    // })
   }
 }

@@ -10,12 +10,13 @@ import { Component, Input } from '@angular/core';
 })
 export class RecipesItemComponent {
   @Input() recipe: Recipe;
+  @Input() recipeId: number;
   // @Output() selectedRecipe = new EventEmitter<void>();
 
   constructor(private recipeService: RecipeService) { }
 
-  onSelect() {
-    // this.selectedRecipe.emit();
-    this.recipeService.selectedRecipe.emit(this.recipe);
-  }
+  // onSelect() {
+  //   // this.selectedRecipe.emit();
+  //   this.recipeService.selectedRecipeId.emit(+this.recipeId);
+  // }
 }
