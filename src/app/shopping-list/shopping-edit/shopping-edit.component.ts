@@ -67,13 +67,20 @@ export class ShoppingEditComponent implements OnInit, AfterViewInit {
       }
     }
     this.formData.reset();
+    if (this.editMode === true) {
+      this.editMode = false;
+      this.router.navigate(['/shopping-list']);
+    }
   }
 
   onRemove() {
     if (this.ingredientId !== undefined) {
       this.shoppingListService.removeIngredient(+this.ingredientId);
       this.formData.reset();
-      this.router.navigate(['/shopping-list']);
+      if (this.editMode === true) {
+        this.editMode = false;
+        this.router.navigate(['/shopping-list']);
+      }
     } else {
       return
     }
