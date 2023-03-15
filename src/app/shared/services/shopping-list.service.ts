@@ -17,12 +17,28 @@ export class ShoppingListService {
   constructor() { }
 
   getIngredients() {
-    return this.ingredients.slice();
+    // return this.ingredients.slice();
+    return this.ingredients;
+  }
+
+  getIngredient(id: number): Ingredient {
+    return this.ingredients[id]
+  }
+
+  editIngredient(id: number, ingredient: Ingredient) {
+    this.ingredients[id].name = ingredient.name
+    this.ingredients[id].amount = ingredient.amount
+  }
+
+  removeIngredient(id: number) {
+    this.ingredients.splice(id, 1);
+    console.log(this.ingredients);
   }
 
   addIngredients(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
-    this.ingredientList.next(this.ingredients.slice());
+    // this.ingredientList.next(this.ingredients.slice());
+    this.ingredientList.next(this.ingredients);
   }
 
   addIngredientsFromRecipeDetail(ingredientsItems: Ingredient[]) {
@@ -30,6 +46,7 @@ export class ShoppingListService {
     //   this.ingredients.push(ingredient)
     // }
     this.ingredients.push(...ingredientsItems)
-    this.ingredientList.next(this.ingredients.slice());
+    // this.ingredientList.next(this.ingredients.slice());
+    this.ingredientList.next(this.ingredients);
   }
 }

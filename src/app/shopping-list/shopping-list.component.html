@@ -3,9 +3,16 @@
     <app-shopping-edit></app-shopping-edit>
     <hr>
     <ul class="list-group">
-      <a class="list-group-item list-group-item-action" style="cursor: pointer"
+      <a [routerLink]="['/shopping-list']" [queryParams]="{ id: i}"
+        class="list-group-item list-group-item-action d-flex justify-content-between" style="cursor: pointer"
         *ngFor="let ingredient of ingredients; let i = index">
-        {{ ingredient.name }} ({{ ingredient.amount }})
+        <div class="info">
+          {{ ingredient.name }} ({{ ingredient.amount }})
+        </div>
+        <!-- <div class="actions d-flex gap-3">
+          <a [routerLink]="[i, 'edit']"><i class="bi bi-pencil-fill text-black"></i></a>
+          <i class="bi bi-trash3-fill" (click)="onRemoveIngredient"></i>
+        </div> -->
       </a>
     </ul>
   </div>

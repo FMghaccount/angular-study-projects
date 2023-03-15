@@ -1,3 +1,4 @@
+import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { RecipesFormComponent } from './recipes/recipes-form/recipes-form.component';
 import { RecipesStartComponent } from './recipes/recipes-start/recipes-start.component';
 import { RecipesDetailComponent } from './recipes/recipes-detail/recipes-detail.component';
@@ -17,7 +18,9 @@ const routes: Routes = [
       { path: ':id/edit', component: RecipesFormComponent }
     ]
   },
-  { path: 'shopping-list', component: ShoppingListComponent },
+  {
+    path: 'shopping-list', component: ShoppingListComponent
+  },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];
