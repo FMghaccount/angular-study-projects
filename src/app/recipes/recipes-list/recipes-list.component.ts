@@ -1,7 +1,8 @@
+import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RecipeService } from './../../shared/services/recipe.service';
-// import { Component, Output, EventEmitter } from '@angular/core';
-import { Component } from '@angular/core';
+// import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Recipe } from '../../shared/models/recipe.model';
 
 @Component({
@@ -9,9 +10,9 @@ import { Recipe } from '../../shared/models/recipe.model';
   templateUrl: './recipes-list.component.html',
   styleUrls: ['./recipes-list.component.css']
 })
-export class RecipesListComponent {
+export class RecipesListComponent implements OnDestroy {
   recipes: Recipe[] = []
-
+  subscription: Subscription;
   // @Output() selectedRecipeId = new EventEmitter<number>();
 
   // onRecipeSelected(recipeId: number) {
@@ -21,13 +22,17 @@ export class RecipesListComponent {
   constructor(private recipeService: RecipeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
+    this.recipes = this.recipeService.getRecipes();
+    this.subscription = this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
       this.recipes = recipes;
     })
-    this.recipes = this.recipeService.getRecipes();
   }
 
   onClick() {
     this.router.navigate(['new'], { relativeTo: this.activatedRoute })
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 }

@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { RecipeService } from './../../shared/services/recipe.service';
 import { Recipe } from '../../shared/models/recipe.model';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
@@ -8,9 +9,10 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
   templateUrl: './recipes-detail.component.html',
   styleUrls: ['./recipes-detail.component.css']
 })
-export class RecipesDetailComponent {
+export class RecipesDetailComponent implements OnDestroy {
   @Input() recipe: Recipe;
-  recipeId: number
+  recipeId: number;
+  subscription: Subscription;
 
   constructor(private recipeService: RecipeService,
     private activateRoute: ActivatedRoute,
@@ -22,7 +24,7 @@ export class RecipesDetailComponent {
       this.recipe = this.recipeService.getRecipe(+params['id'])
       this.recipeId = +params['id']
     })
-    this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
+    this.subscription = this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
       this.recipe = recipes[this.recipeId];
     })
   }
@@ -44,5 +46,9 @@ export class RecipesDetailComponent {
       return
     }
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 }

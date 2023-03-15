@@ -1,12 +1,10 @@
-import { RecipeService } from './../shared/services/recipe.service';
 // import { Recipe } from '../shared/models/recipe.model';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css'],
-  providers: [RecipeService]
+  styleUrls: ['./recipes.component.css']
 })
 export class RecipesComponent {
   // selectedRecipe: Recipe;
@@ -16,7 +14,7 @@ export class RecipesComponent {
   //   console.log(recipe);
   // }
 
-  constructor(private recipeService: RecipeService) { }
+  constructor() { }
 
   ngOnInit() {
     // this.recipeService.selectedRecipeId.subscribe((recipe: Recipe) => {

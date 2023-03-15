@@ -105,8 +105,6 @@ export class RecipesFormComponent {
       this.router.navigate(['/recipes', this.id])
       // this.recipeService.updateRecipe(this.id, this.recipeForm.value)
     } else {
-      console.log(newRecipe);
-
       // this.recipeService.addRecipe(newRecipe);
       this.recipeService.addRecipe(newRecipe);
       this.router.navigate(['/recipes'])

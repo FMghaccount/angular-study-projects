@@ -23,13 +23,16 @@
         </p>
         <div class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end">
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
-          <input formControlName="recipeImagePath" type="text" id="recipeImagePath" class="form-control">
+          <input formControlName="recipeImagePath" #imagePath type="text" id="recipeImagePath" class="form-control">
           <label for="recipeImagePath">تصویر</label>
         </div>
         <p class="help-block color-red"
           *ngIf="!recipeForm.get('recipeImagePath').valid && recipeForm.get('recipeImagePath').touched">
           <span *ngIf="signupForm.get('recipeImagePath').errors?.['required']">لطفاً آدرس تصویر را وارد کنید</span>
         </p>
+        <div class="col-12 mt-4 mb-4">
+          <img [src]="imagePath.value" alt="" class="img-fluid">
+        </div>
         <div class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end">
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
           <!-- <input type="text" id="description" class="form-control"> -->
@@ -50,7 +53,7 @@
               <input type="number" min="1" formControlName="amount" class="form-control">
             </div>
             <div class="col-2">
-              <button class="btn btn-danger" (click)="onRemoveIngredient(i)">حذف</button>
+              <button class="btn btn-danger w-100" (click)="onRemoveIngredient(i)">حذف</button>
             </div>
           </div>
         </div>
