@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-12">
     <form>
       <div class="row mb-4">
@@ -17,6 +17,37 @@
           <button class="btn btn-success me-3" type="submit" (click)="onAddIngredients()">ذخیره</button>
           <button class="btn btn-danger me-3" type="button">حذف</button>
           <button class="btn btn-primary" type="button">لغو</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> -->
+<div class="row">
+  <div class="col-12">
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <div class="row mb-4">
+        <div class="col-8 col-md-6 form-group d-flex flex-column-reverse justify-content-end">
+          <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p>
+          <input type="text" id="name" class="form-control" #name="ngModel" ngModel name="name" required>
+          <label for="name">عنوان</label>
+        </div>
+        <div class="col-4 col-md-2 form-group d-flex flex-column-reverse justify-content-end">
+          <p class="color-red" *ngIf="amount.errors?.['required'] && amount.touched">لطفاً تعداد را وارد کنید
+          </p>
+          <p class="color-red" *ngIf="amount.errors?.['min'] && amount.touched">تعداد باید 1 یا بزرگتر از 1
+            باشد
+          </p>
+          <input type="number" id="amount" class="form-control" min="1" #amount="ngModel" ngModel name="amount"
+            required>
+          <label for="amount">تعداد</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <!-- <button class="btn btn-success me-3" type="submit" (click)="onAddIngredients()">ذخیره</button> -->
+          <button class="btn btn-success me-3" [disabled]="!form.valid" type="submit">ذخیره</button>
+          <button class="btn btn-danger me-3" [disabled]="!form.valid" type="button">حذف</button>
+          <button class="btn btn-primary" [disabled]="!form.valid" type="button">لغو</button>
         </div>
       </div>
     </form>
