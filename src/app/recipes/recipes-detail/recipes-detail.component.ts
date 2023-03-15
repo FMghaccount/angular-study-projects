@@ -10,6 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class RecipesDetailComponent {
   @Input() recipe: Recipe;
+  recipeId: number
 
   constructor(private recipeService: RecipeService,
     private activateRoute: ActivatedRoute,
@@ -19,6 +20,10 @@ export class RecipesDetailComponent {
     // this.recipe = this.recipeService.getRecipe(+this.activateRoute.snapshot.params['id']);
     this.activateRoute.params.subscribe((params: Params) => {
       this.recipe = this.recipeService.getRecipe(+params['id'])
+      this.recipeId = +params['id']
+    })
+    this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
+      this.recipe = recipes[this.recipeId];
     })
   }
 
@@ -28,5 +33,16 @@ export class RecipesDetailComponent {
 
   onEdit() {
     this.router.navigate(['edit'], { relativeTo: this.activateRoute })
+  }
+
+  onRemove() {
+    let confirmation = confirm('آیا اطمینان دارید؟')
+    if (confirmation) {
+      this.recipeService.removeRecipe(this.recipeId);
+      this.router.navigate(['/recipes']);
+    } else {
+      return
+    }
+
   }
 }

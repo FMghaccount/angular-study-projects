@@ -21,6 +21,9 @@ export class RecipesListComponent {
   constructor(private recipeService: RecipeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
+      this.recipes = recipes;
+    })
     this.recipes = this.recipeService.getRecipes();
   }
 

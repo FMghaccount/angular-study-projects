@@ -12,6 +12,7 @@ import { Ingredient } from '../models/ingredient.model';
 export class RecipeService {
   // selectedRecipe = new EventEmitter<Recipe>();
   // selectedRecipeId = new EventEmitter<number>();
+  recipeList = new Subject<Recipe[]>();
   selectedRecipeId = new Subject<number>();
 
   private recipes: Recipe[] = [
@@ -33,7 +34,8 @@ export class RecipeService {
   ];
 
   getRecipes() {
-    return this.recipes.slice();
+    // return this.recipes.slice();
+    return this.recipes;
   }
 
   getRecipe(id: number) {
@@ -42,6 +44,24 @@ export class RecipeService {
 
   addToIngredientsFromRecipeDetail(ingredient: Ingredient[]) {
     this.slService.addIngredientsFromRecipeDetail(ingredient)
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    // this.recipeList.next(this.recipes.slice())
+    this.recipeList.next(this.recipes)
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+
+    // this.recipeList.next(this.recipes.slice())
+    this.recipeList.next(this.recipes)
+  }
+
+  removeRecipe(id: number) {
+    this.recipes.splice(id, 1)
+    this.recipeList.next(this.recipes)
   }
 
   constructor(private slService: ShoppingListService) { }

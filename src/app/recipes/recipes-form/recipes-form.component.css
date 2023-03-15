@@ -1,0 +1,26 @@
+input.ng-invalid.ng-touched {
+  border: 1px solid #da1c1c;
+  background-color: #ffeeee;
+}
+
+input.ng-invalid.ng-touched + label {
+  color: red;
+}
+
+textarea.ng-invalid.ng-touched {
+  border: 1px solid #da1c1c;
+  background-color: #ffeeee;
+}
+
+textarea.ng-invalid.ng-touched + label {
+  color: red;
+}
+
+/* .flex-column-reverse {
+  display: flex;
+  flex-direction: column-reverse;
+} */
+
+.color-red{
+  color: red;
+}

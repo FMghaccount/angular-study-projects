@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   {
     path: 'recipes', component: RecipesComponent, children: [
-      { path: '', component: RecipesStartComponent, outlet: 'recipesDetail' },
+      { path: '', component: RecipesStartComponent },
       { path: 'new', component: RecipesFormComponent },
       { path: ':id', component: RecipesDetailComponent },
       { path: ':id/edit', component: RecipesFormComponent }
