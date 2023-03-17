@@ -15,27 +15,34 @@ export class RecipeService {
   recipeList = new Subject<Recipe[]>();
   selectedRecipeId = new Subject<number>();
 
-  private recipes: Recipe[] = [
-    new Recipe('اولین دستور پخت',
-      'لورم ایپسوم متن ساختگی',
-      'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
-      [
-        new Ingredient('نان', 1),
-        new Ingredient('سیب زمینی سرخ شده', 20),
-        new Ingredient('گوشت', 1)
-      ]),
-    new Recipe('دومین دستور پخت',
-      'لورم ایپسوم متن ساختگی',
-      'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
-      [
-        new Ingredient('نان', 2),
-        new Ingredient('گوشت', 1)
-      ])
-  ];
+  // private recipes: Recipe[] = [
+  //   new Recipe('اولین دستور پخت',
+  //     'لورم ایپسوم متن ساختگی',
+  //     'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
+  //     [
+  //       new Ingredient('نان', 1),
+  //       new Ingredient('سیب زمینی سرخ شده', 20),
+  //       new Ingredient('گوشت', 1)
+  //     ]),
+  //   new Recipe('دومین دستور پخت',
+  //     'لورم ایپسوم متن ساختگی',
+  //     'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
+  //     [
+  //       new Ingredient('نان', 2),
+  //       new Ingredient('گوشت', 1)
+  //     ])
+  // ];
+
+  private recipes: Recipe[] = []
 
   getRecipes() {
     // return this.recipes.slice();
     return this.recipes;
+  }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipeList.next(this.recipes)
   }
 
   getRecipe(id: number) {

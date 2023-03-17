@@ -1,3 +1,4 @@
+import { RecipesResolverService } from './shared/resolvers/recipes-resolver.service';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { RecipesFormComponent } from './recipes/recipes-form/recipes-form.component';
 import { RecipesStartComponent } from './recipes/recipes-start/recipes-start.component';
@@ -14,7 +15,7 @@ const routes: Routes = [
     path: 'recipes', component: RecipesComponent, children: [
       { path: '', component: RecipesStartComponent },
       { path: 'new', component: RecipesFormComponent },
-      { path: ':id', component: RecipesDetailComponent },
+      { path: ':id', component: RecipesDetailComponent, resolve: [RecipesResolverService] },
       { path: ':id/edit', component: RecipesFormComponent }
     ]
   },
