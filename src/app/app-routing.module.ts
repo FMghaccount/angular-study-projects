@@ -1,3 +1,4 @@
+import { RecipeDetailGuard } from './shared/guards/recipe-detail.guard';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { RecipesResolverService } from './shared/resolvers/recipes-resolver.service';
@@ -17,8 +18,8 @@ const routes: Routes = [
     path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard], children: [
       { path: '', component: RecipesStartComponent },
       { path: 'new', component: RecipesFormComponent },
-      { path: ':id', component: RecipesDetailComponent, resolve: [RecipesResolverService] },
-      { path: ':id/edit', component: RecipesFormComponent }
+      { path: ':id', component: RecipesDetailComponent, canActivate: [RecipeDetailGuard], resolve: [RecipesResolverService] },
+      { path: ':id/edit', component: RecipesFormComponent, canActivate: [RecipeDetailGuard] }
     ]
   },
   {
