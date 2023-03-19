@@ -1,9 +1,14 @@
+import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
+import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
+import { LoadingComponent } from './shared/loading/loading.component';
+import { AuthComponent } from './auth/auth.component';
 import { RecipeService } from './shared/services/recipe.service';
 import { ShoppingListService } from './shared/services/shopping-list.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from "./header/header.component";
@@ -32,7 +37,11 @@ import { RecipesFormComponent } from './recipes/recipes-form/recipes-form.compon
     DropdownDirective,
     NotFoundComponent,
     RecipesStartComponent,
-    RecipesFormComponent
+    RecipesFormComponent,
+    AuthComponent,
+    LoadingComponent,
+    PlaceholderDirective,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +50,18 @@ import { RecipesFormComponent } from './recipes/recipes-form/recipes-form.compon
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [ShoppingListService, RecipeService],
-  bootstrap: [AppComponent]
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AlertComponent
+  ]
 })
 export class AppModule { }

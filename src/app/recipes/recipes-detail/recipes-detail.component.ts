@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { RecipeService } from './../../shared/services/recipe.service';
 import { Recipe } from '../../shared/models/recipe.model';
 import { Component, Input, OnDestroy } from '@angular/core';
@@ -21,9 +21,15 @@ export class RecipesDetailComponent implements OnDestroy {
   ngOnInit() {
     // this.recipe = this.recipeService.getRecipe(+this.activateRoute.snapshot.params['id']);
     this.activateRoute.params.subscribe((params: Params) => {
-      this.recipe = this.recipeService.getRecipe(+params['id'])
-      this.recipeId = +params['id']
+      if (!this.recipeService.getRecipe(+params['id'])) {
+        this.router.navigate(['/recipes']);
+      }
+      else {
+        this.recipe = this.recipeService.getRecipe(+params['id'])
+        this.recipeId = +params['id']
+      }
     })
+
     this.subscription = this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
       this.recipe = recipes[this.recipeId];
     })

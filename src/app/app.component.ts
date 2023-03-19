@@ -1,3 +1,5 @@
+import { DataStorageService } from './shared/services/data-storage.service';
+import { AuthService } from './shared/services/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -10,4 +12,11 @@ export class AppComponent {
   // onNavigate(feature) {
   //   this.selectedFeature = feature
   // }
+
+  constructor(private authService: AuthService, private dataStorageService: DataStorageService) { }
+
+  ngOnInit(): void {
+    this.authService.autoLogin();
+    this.dataStorageService.fetchRecipes().subscribe();
+  }
 }

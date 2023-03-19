@@ -1,0 +1,42 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 50;
+}
+
+.alert-box {
+  position: fixed;
+  top: 30vh;
+  left: 20vw;
+  width: 60vw;
+  /* padding: 16px; */
+  z-index: 100;
+  background: white;
+  box-shadow: 0 2px 8px rbga(0, 0, 0, 0.26);
+  background-color: #ffe6e6;
+  border-radius: 0.375rem;
+}
+
+.alert-box-actions {
+  text-align: left;
+  padding: 1rem;
+}
+
+.alert-box-header{
+  margin-top: 0;
+  background-color: #ffc3c3;
+  color: #fd2020;
+  padding: 1rem;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+.alert-box-paragraph {
+  /* background-color: #ffd8d8; */
+  color: #fd2020;
+  padding: 1rem;
+}
