@@ -6,7 +6,7 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'shopping-list', component: ShoppingListComponent, canActivate: [AuthGuard]
+    path: '', component: ShoppingListComponent, canActivate: [AuthGuard]
   },
 ]
 

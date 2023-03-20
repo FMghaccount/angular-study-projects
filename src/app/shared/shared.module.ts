@@ -1,29 +1,25 @@
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { AuthComponent } from '../auth/auth.component';
 import { AlertComponent } from './alert/alert.component';
-import { DropdownDirective } from './directives/dropdown.directive';
+// import { DropdownDirective } from './directives/dropdown.directive';
 import { LoadingComponent } from './loading/loading.component';
 import { PlaceholderDirective } from './placeholder/placeholder.directive';
 
 @NgModule({
   declarations: [
-    DropdownDirective,
-    AuthComponent,
+    // DropdownDirective,
     LoadingComponent,
     PlaceholderDirective,
     AlertComponent
   ],
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule
+    FormsModule
   ],
   exports: [
-    DropdownDirective,
-    AuthComponent,
+    // DropdownDirective,
     LoadingComponent,
     PlaceholderDirective,
     AlertComponent,
