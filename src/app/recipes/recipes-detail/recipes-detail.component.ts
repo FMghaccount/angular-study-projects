@@ -19,15 +19,17 @@ export class RecipesDetailComponent implements OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
-    // this.recipe = this.recipeService.getRecipe(+this.activateRoute.snapshot.params['id']);
+    this.recipe = this.recipeService.getRecipe(+this.activateRoute.snapshot.params['id']);
     this.activateRoute.params.subscribe((params: Params) => {
-      if (!this.recipeService.getRecipe(+params['id'])) {
-        this.router.navigate(['/recipes']);
-      }
-      else {
-        this.recipe = this.recipeService.getRecipe(+params['id'])
-        this.recipeId = +params['id']
-      }
+      this.recipe = this.recipeService.getRecipe(+params['id'])
+      this.recipeId = +params['id']
+      // if (!this.recipeService.getRecipe(+params['id'])) {
+      //   this.router.navigate(['/recipes']);
+      // }
+      // else {
+      //   this.recipe = this.recipeService.getRecipe(+params['id'])
+      //   this.recipeId = +params['id']
+      // }
     })
 
     this.subscription = this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {

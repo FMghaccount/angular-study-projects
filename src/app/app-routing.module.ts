@@ -2,7 +2,7 @@ import { RecipeDetailGuard } from './shared/guards/recipe-detail.guard';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { RecipesResolverService } from './shared/resolvers/recipes-resolver.service';
-import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
+// import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { RecipesFormComponent } from './recipes/recipes-form/recipes-form.component';
 import { RecipesStartComponent } from './recipes/recipes-start/recipes-start.component';
 import { RecipesDetailComponent } from './recipes/recipes-detail/recipes-detail.component';
@@ -18,8 +18,8 @@ const routes: Routes = [
     path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard], children: [
       { path: '', component: RecipesStartComponent },
       { path: 'new', component: RecipesFormComponent },
-      { path: ':id', component: RecipesDetailComponent, canActivate: [RecipeDetailGuard], resolve: [RecipesResolverService] },
-      { path: ':id/edit', component: RecipesFormComponent, canActivate: [RecipeDetailGuard] }
+      { path: ':id', component: RecipesDetailComponent, resolve: [RecipesResolverService], canActivate: [RecipeDetailGuard] },
+      { path: ':id/edit', component: RecipesFormComponent, resolve: [RecipesResolverService] }
     ]
   },
   {
