@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 
 import { AppComponent } from './app.component';
@@ -7,11 +8,10 @@ import { HeaderComponent } from "./header/header.component";
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
-import { AlertComponent } from './shared/alert/alert.component';
 import { RecipeService } from './shared/services/recipe.service';
+import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { ShoppingListService } from './shared/services/shopping-list.service';
 import { RecipesModule } from './recipes/recipes.module';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -22,7 +22,9 @@ import { SharedModule } from './shared/shared.module';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     SharedModule,
     RecipesModule,
     ShoppingListModule,
@@ -37,9 +39,6 @@ import { SharedModule } from './shared/shared.module';
       multi: true
     }
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [
-    AlertComponent
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
