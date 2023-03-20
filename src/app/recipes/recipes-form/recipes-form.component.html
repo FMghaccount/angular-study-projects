@@ -17,18 +17,16 @@
           <input formControlName="recipeName" type="text" id="recipeName" class="form-control">
           <label for="recipeName">عنوان</label>
         </div>
-        <p class="help-block color-red"
-          *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched">
-          <span *ngIf="signupForm.get('recipeName').errors?.['required']">لطفاً عنوان را وارد کنید</span>
+        <p class="help-block color-red" *ngIf="!recipeName.valid && recipeName.touched">
+          <span *ngIf="recipeName.errors?.['required']">لطفاً عنوان را وارد کنید</span>
         </p>
         <div class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end">
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
           <input formControlName="recipeImagePath" #imagePath type="text" id="recipeImagePath" class="form-control">
           <label for="recipeImagePath">تصویر</label>
         </div>
-        <p class="help-block color-red"
-          *ngIf="!recipeForm.get('recipeImagePath').valid && recipeForm.get('recipeImagePath').touched">
-          <span *ngIf="signupForm.get('recipeImagePath').errors?.['required']">لطفاً آدرس تصویر را وارد کنید</span>
+        <p class="help-block color-red" *ngIf="!recipeImagePath.valid && recipeImagePath.touched">
+          <span *ngIf="recipeImagePath.errors?.['required']">لطفاً آدرس تصویر را وارد کنید</span>
         </p>
         <div class="col-12 mt-4 mb-4">
           <img [src]="imagePath.value" alt="" class="img-fluid">
@@ -39,9 +37,8 @@
           <textarea formControlName="recipeDescription" id="recipeDescription" class="form-control" rows="3"></textarea>
           <label for="recipeDescription">توضیحات</label>
         </div>
-        <p class="help-block color-red"
-          *ngIf="!recipeForm.get('recipeDescription').valid && recipeForm.get('recipeDescription').touched">
-          <span *ngIf="signupForm.get('recipeDescription').errors?.['required']">لطفاً توضیحات را وارد کنید</span>
+        <p class="help-block color-red" *ngIf="!recipeDescription.valid && recipeDescription.touched">
+          <span *ngIf="recipeDescription.errors?.['required']">لطفاً توضیحات را وارد کنید</span>
         </p>
         <div class="col-12 mt-4 mb-3" formArrayName="recipeIngredients">
           <label for="recipeDescription">مواد تشکیل دهنده</label>

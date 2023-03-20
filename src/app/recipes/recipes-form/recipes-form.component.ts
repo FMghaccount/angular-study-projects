@@ -30,8 +30,14 @@ export class RecipesFormComponent {
   }
 
   get controls() { // a getter!
-    return (<FormArray>this.recipeForm.get('recipeIngredients')).controls;
+    if (<FormArray>this.recipeForm.get('recipeIngredients'))
+      return (<FormArray>this.recipeForm.get('recipeIngredients')).controls;
   }
+
+  get recipeName() { return this.recipeForm.get('recipeName'); }
+  get recipeDescription() { return this.recipeForm.get('recipeDescription'); }
+  get recipeImagePath() { return this.recipeForm.get('recipeImagePath'); }
+  get recipeIngredients() { return this.recipeForm.get('recipeIngredients'); }
 
   private initForm() {
     let recipeName = '';
