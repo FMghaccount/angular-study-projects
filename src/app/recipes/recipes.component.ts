@@ -1,3 +1,6 @@
+import { RecipeService } from './../shared/services/recipe.service';
+import { DataStorageService } from './../shared/services/data-storage.service';
+import { AuthService } from './../shared/services/auth.service';
 // import { Recipe } from '../shared/models/recipe.model';
 import { Component } from '@angular/core';
 
@@ -14,12 +17,20 @@ export class RecipesComponent {
   //   console.log(recipe);
   // }
 
-  constructor() { }
+  constructor(private authService: AuthService,
+    private dataStorageService: DataStorageService,
+    private recipeService: RecipeService) { }
 
   ngOnInit() {
     // this.recipeService.selectedRecipeId.subscribe((recipe: Recipe) => {
     //   this.selectedRecipe = recipe;
     // })
+
+    this.authService.autoLogin();
+    const recipes = this.recipeService.getRecipes();
+    if (recipes.length === 0) {
+      this.dataStorageService.fetchRecipes().subscribe();
+    }
 
 
     // with Subject Operator from rxjs

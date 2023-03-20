@@ -14,16 +14,22 @@ export class AppComponent {
   //   this.selectedFeature = feature
   // }
 
-  constructor(
-    private authService: AuthService,
-    private dataStorageService: DataStorageService,
-    private recipeService: RecipeService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.autoLogin();
-    const recipes = this.recipeService.getRecipes();
-    if (recipes.length === 0) {
-      this.dataStorageService.fetchRecipes().subscribe();
-    }
   }
+
+  // constructor(
+  //   private authService: AuthService,
+  //   private dataStorageService: DataStorageService,
+  //   private recipeService: RecipeService) { }
+
+  // ngOnInit(): void {
+  //   this.authService.autoLogin();
+  //   const recipes = this.recipeService.getRecipes();
+  //   if (recipes.length === 0) {
+  //     this.dataStorageService.fetchRecipes().subscribe();
+  //   }
+  // }
 }
