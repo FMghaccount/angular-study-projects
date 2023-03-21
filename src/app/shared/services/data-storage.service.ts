@@ -6,6 +6,7 @@ import { RecipeService } from './recipe.service';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class DataStorageService {
     this.recipes = this.recipeService.getRecipes();
     if (this.recipes.length > 0) {
       this.http.put(
-        'https://ng-recipe-book-9ff96-default-rtdb.firebaseio.com/recipes.json',
+        environment.firebaseApiUrl + '/recipes.json',
         this.recipes, {
         observe: 'response'
       }).subscribe(responseData => {
@@ -58,7 +59,7 @@ export class DataStorageService {
 
     return this.http
       .get<Recipe[]>(
-        'https://ng-recipe-book-9ff96-default-rtdb.firebaseio.com/recipes.json'
+        environment.firebaseApiUrl + '/recipes.json'
       ).pipe(
         map(recipes => {
           return recipes.map(recipe => {
