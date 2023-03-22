@@ -1,4 +1,4 @@
-import { AlertComponent } from './../shared/alert/alert.component';
+import { AlertComponent } from './../shared/components/alert/alert.component';
 import { PlaceholderDirective } from './../shared/placeholder/placeholder.directive';
 import { Router } from '@angular/router';
 import { AuthService, AuthResponseData } from '../shared/services/auth.service';
