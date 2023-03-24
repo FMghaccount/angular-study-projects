@@ -1,23 +1,23 @@
-import { Action } from "@ngrx/store";
-import { Ingredient } from "src/app/shared/models/ingredient.model";
+import { Action } from '@ngrx/store';
+import { Ingredient } from 'src/app/shared/models/ingredient.model';
 
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const ADD_INGREDIENTS = 'ADD_INGREDIENTS'
-export const UPDATE_INGREDIENT = 'UPDATE_INGREDIENT';
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
-export const START_EDIT = 'START_EDIT';
-export const STOP_EDIT = 'STOP_EDIT';
+export const ADD_INGREDIENT = '[ShoppingList] ADD_INGREDIENT';
+export const ADD_INGREDIENTS = '[ShoppingList] ADD_INGREDIENTS';
+export const UPDATE_INGREDIENT = '[ShoppingList] UPDATE_INGREDIENT';
+export const DELETE_INGREDIENT = '[ShoppingList] DELETE_INGREDIENT';
+export const START_EDIT = '[ShoppingList] START_EDIT';
+export const STOP_EDIT = '[ShoppingList] STOP_EDIT';
 
 export class addIngredient implements Action {
   readonly type = ADD_INGREDIENT;
 
-  constructor(public payload: Ingredient) { }
+  constructor(public payload: Ingredient) {}
 }
 
 export class addIngredients implements Action {
   readonly type = ADD_INGREDIENTS;
 
-  constructor(public payload: Ingredient[]) { }
+  constructor(public payload: Ingredient[]) {}
 }
 
 // export class updateIngredient implements Action {
@@ -28,7 +28,7 @@ export class addIngredients implements Action {
 export class updateIngredient implements Action {
   readonly type = UPDATE_INGREDIENT;
 
-  constructor(public payload: Ingredient) { }
+  constructor(public payload: Ingredient) {}
 }
 
 // export class deleteIngredient implements Action {
@@ -43,7 +43,7 @@ export class deleteIngredient implements Action {
 export class startEdit implements Action {
   readonly type = START_EDIT;
 
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
 export class stopEdit implements Action {
@@ -51,9 +51,9 @@ export class stopEdit implements Action {
 }
 
 export type ShoppingListActions =
-  addIngredient |
-  addIngredients |
-  updateIngredient |
-  deleteIngredient |
-  startEdit |
-  stopEdit;
+  | addIngredient
+  | addIngredients
+  | updateIngredient
+  | deleteIngredient
+  | startEdit
+  | stopEdit;

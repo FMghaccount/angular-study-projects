@@ -1,6 +1,6 @@
 import * as ShoppingListActions from './../action/shopping-list.actions';
 // import { Action } from "@ngrx/store"
-import { Ingredient } from "../../../models/ingredient.model"
+import { Ingredient } from '../../../models/ingredient.model';
 
 export interface State {
   ingredients: Ingredient[];
@@ -8,41 +8,43 @@ export interface State {
   editedIngredientIndex: number;
 }
 
-export interface AppState {
-  shoppingList: State;
-}
-
 const initialState: State = {
-  ingredients: [
-    new Ingredient('سیب', 5),
-    new Ingredient('گوجه فرنگی', 10),
-  ],
+  ingredients: [new Ingredient('سیب', 5), new Ingredient('گوجه فرنگی', 10)],
   editedIngredient: null,
-  editedIngredientIndex: -1
-}
+  editedIngredientIndex: -1,
+};
 
-export const ShoppingListReducer = (state: State = initialState, action: ShoppingListActions.ShoppingListActions) => {
+export const ShoppingListReducer = (
+  state: State = initialState,
+  action: ShoppingListActions.ShoppingListActions
+) => {
   switch (action.type) {
     case ShoppingListActions.ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: [...state.ingredients, action.payload]
-      }
+        ingredients: [...state.ingredients, action.payload],
+      };
     case ShoppingListActions.ADD_INGREDIENTS:
-      let prevIngredients = { ...state }
+      let prevIngredients = { ...state };
       let parsedPrevIngredients: {
         ingredients: Ingredient[];
       } = JSON.parse(JSON.stringify(prevIngredients));
-      let newIngredients = [...action.payload]
+      let newIngredients = [...action.payload];
       for (let newIngredient of newIngredients) {
-        let result = parsedPrevIngredients.ingredients.findIndex(ingredient => ingredient.name === newIngredient.name)
+        let result = parsedPrevIngredients.ingredients.findIndex(
+          (ingredient) => ingredient.name === newIngredient.name
+        );
         if (result !== -1) {
-          parsedPrevIngredients.ingredients[result].amount += newIngredient.amount;
+          parsedPrevIngredients.ingredients[result].amount +=
+            newIngredient.amount;
         } else {
-          parsedPrevIngredients.ingredients = [...parsedPrevIngredients.ingredients, newIngredient]
+          parsedPrevIngredients.ingredients = [
+            ...parsedPrevIngredients.ingredients,
+            newIngredient,
+          ];
         }
       }
-      return { ...state, ingredients: parsedPrevIngredients.ingredients }
+      return { ...state, ingredients: parsedPrevIngredients.ingredients };
 
     // case ShoppingListActions.UPDATE_INGREDIENT:
     //   const ingredient = state.ingredients[action.payload.index];
@@ -63,8 +65,8 @@ export const ShoppingListReducer = (state: State = initialState, action: Shoppin
       const ingredient = state.ingredients[state.editedIngredientIndex];
       const updatedIngredient = {
         ...ingredient,
-        ...action.payload
-      }
+        ...action.payload,
+      };
       const updatedIngredients = [...state.ingredients];
       updatedIngredients[state.editedIngredientIndex] = updatedIngredient;
 
@@ -72,8 +74,8 @@ export const ShoppingListReducer = (state: State = initialState, action: Shoppin
         ...state,
         ingredients: updatedIngredients,
         editedIngredient: null,
-        editedIngredientIndex: -1
-      }
+        editedIngredientIndex: -1,
+      };
 
     // case ShoppingListActions.DELETE_INGREDIENT:
     //   return {
@@ -86,28 +88,28 @@ export const ShoppingListReducer = (state: State = initialState, action: Shoppin
     //   }
     case ShoppingListActions.DELETE_INGREDIENT:
       const ingredients = state.ingredients.filter((item, index) => {
-        return index !== state.editedIngredientIndex
-      })
+        return index !== state.editedIngredientIndex;
+      });
 
       return {
         ...state,
         ingredients: ingredients,
         editedIngredient: null,
-        editedIngredientIndex: -1
-      }
+        editedIngredientIndex: -1,
+      };
     case ShoppingListActions.START_EDIT:
       return {
         ...state,
         editedIngredient: { ...state.ingredients[action.payload] },
-        editedIngredientIndex: action.payload
+        editedIngredientIndex: action.payload,
       };
     case ShoppingListActions.STOP_EDIT:
       return {
         ...state,
         editedIngredient: null,
-        editedIngredientIndex: -1
+        editedIngredientIndex: -1,
       };
     default:
       return state;
   }
-}
+};

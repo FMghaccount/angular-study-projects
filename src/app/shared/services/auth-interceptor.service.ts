@@ -1,24 +1,69 @@
-import { take, exhaustMap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { take, exhaustMap, map } from 'rxjs/operators';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpParams,
+  HttpRequest,
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { AuthService } from './auth.service';
+import * as fromApp from '../store/app.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private store: Store<fromApp.AppState>
+  ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return this.authService.user.pipe(
-      take(1), exhaustMap(user => {
-        if (!user) {
-          return next.handle(req)
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    // return this.authService.user.pipe(
+    //   take(1),
+    //   exhaustMap((user) => {
+    //     if (!user) {
+    //       return next.handle(req);
+    //     }
+    //     const modifiedReq = req.clone({
+    //       params: new HttpParams().set('auth', user.token),
+    //     });
+    //     return next.handle(modifiedReq);
+    //   })
+    // );
+
+    return this.store.select('auth').pipe(
+      take(1),
+      exhaustMap((user) => {
+        if (!user.user) {
+          return next.handle(req);
         }
         const modifiedReq = req.clone({
-          params: new HttpParams().set('auth', user.token)
-        })
+          params: new HttpParams().set('auth', user.user.token),
+        });
         return next.handle(modifiedReq);
       })
-    )
+    );
+
+    // return this.store.select('auth').pipe(
+    //   take(1),
+    //   map((authState) => {
+    //     return authState.user;
+    //   }),
+    //   exhaustMap((user) => {
+    //     if (!user) {
+    //       return next.handle(req);
+    //     }
+    //     const modifiedReq = req.clone({
+    //       params: new HttpParams().set('auth', user.token),
+    //     });
+    //     return next.handle(modifiedReq);
+    //   })
+    // );
   }
 }

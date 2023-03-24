@@ -2,9 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Ingredient } from '../shared/models/ingredient.model';
-import * as fromShoppingList from '../shared/store/shopping-list/reducer/shopping-list.reducer'
 // import { ShoppingListService } from './../shared/services/shopping-list.service';
 import { Store } from '@ngrx/store';
+import * as fromApp from '../shared/store/app.reducer'
 
 @Component({
   selector: 'app-shopping-list',
@@ -19,7 +19,7 @@ export class ShoppingListComponent implements OnDestroy {
 
   constructor(
     // private shoppingListService: ShoppingListService,
-    private store: Store<fromShoppingList.AppState>) { }
+    private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
     // this.ingredients = this.store.select('shoppingList')

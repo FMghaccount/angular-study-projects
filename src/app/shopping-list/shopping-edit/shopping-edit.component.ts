@@ -6,10 +6,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Ingredient } from '../../shared/models/ingredient.model';
-import { ShoppingListService } from './../../shared/services/shopping-list.service';
+// import { ShoppingListService } from './../../shared/services/shopping-list.service';
 import * as ShoppingListActions from '../../shared/store/shopping-list/action/shopping-list.actions'
-import * as fromShoppingList from '../../shared/store/shopping-list/reducer/shopping-list.reducer'
-
+import * as fromApp from '../../shared/store/app.reducer'
 
 @Component({
   selector: 'app-shopping-edit',
@@ -30,7 +29,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     // private shoppingListService: ShoppingListService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private store: Store<fromShoppingList.AppState>) { }
+    private store: Store<fromApp.AppState>) { }
 
   // onAddIngredients() {
   //   if (this.ingredientName && this.amountInput.nativeElement.value && this.amountInput.nativeElement.value > 0) {
