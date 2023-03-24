@@ -1,17 +1,27 @@
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
+import { AuthService, AuthResponseData } from '../shared/services/auth.service';
 import { AlertComponent } from './../shared/components/alert/alert.component';
 import { PlaceholderDirective } from './../shared/placeholder/placeholder.directive';
-import { Router } from '@angular/router';
-import { AuthService, AuthResponseData } from '../shared/services/auth.service';
-import { NgForm } from '@angular/forms';
-import { Component, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import * as fromApp from '../shared/store/app.reducer';
+import * as AuthActions from '../shared/store/auth/action/auth.actions';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnDestroy {
+export class AuthComponent implements OnInit, OnDestroy {
   // @ViewChild('form') userForm: NgForm
   isLoginMode: boolean = true;
   isLoading: boolean = false;
@@ -22,36 +32,62 @@ export class AuthComponent implements OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver) { }
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private store: Store<fromApp.AppState>
+  ) {}
+
+  ngOnInit() {
+    this.store.select('auth').subscribe((authState) => {
+      this.isLoading = authState.loading;
+      this.error = authState.authError;
+      if (this.error) {
+        this.showErrorAlert(this.error);
+      }
+    });
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-
   onSubmit(form: NgForm) {
     if (!form.valid && !form.value.email && !form.value.password) {
-      alert('لطفاً فرم را به درستی کامل کنید')
-      return
+      alert('لطفاً فرم را به درستی کامل کنید');
+      return;
     } else {
-      let authObs: Observable<AuthResponseData>
+      let authObs: Observable<AuthResponseData>;
       this.isLoading = true;
       if (!this.isLoginMode) {
-        authObs = this.authService.signUp(form.value.email, form.value.password)
+        authObs = this.authService.signUp(
+          form.value.email,
+          form.value.password
+        );
       } else {
-        authObs = this.authService.signIn(form.value.email, form.value.password)
+        this.store.dispatch(
+          new AuthActions.LoginStart({
+            email: form.value.email,
+            password: form.value.password,
+          })
+        );
+        // authObs = this.authService.signIn(
+        //   form.value.email,
+        //   form.value.password
+        // );
       }
 
-      authObs.subscribe(responseData => {
-        console.log(responseData);
-        this.isLoading = false;
-        this.error = '';
-        this.router.navigate(['/recipes']);
-      }, errorMessage => {
-        this.error = errorMessage
-        this.showErrorAlert(errorMessage);
-        this.isLoading = false;
-      })
+      // authObs.subscribe(
+      //   (responseData) => {
+      //     console.log(responseData);
+      //     this.isLoading = false;
+      //     this.error = '';
+      //     this.router.navigate(['/recipes']);
+      //   },
+      //   (errorMessage) => {
+      //     this.error = errorMessage;
+      //     this.showErrorAlert(errorMessage);
+      //     this.isLoading = false;
+      //   }
+      // );
     }
     form.reset();
   }
@@ -62,7 +98,7 @@ export class AuthComponent implements OnDestroy {
   }
 
   onOk() {
-    this.error = ''
+    this.error = '';
     this.isLoading = false;
   }
 
@@ -74,9 +110,8 @@ export class AuthComponent implements OnDestroy {
 
   private showErrorAlert(message: string) {
     // const alertCmp = new AlertComponent();
-    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
-      AlertComponent
-    );
+    const alertCmpFactory =
+      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
     const hostViewContainerRef = this.alertHost.viewContainerRef;
     hostViewContainerRef.clear();
 
@@ -90,5 +125,4 @@ export class AuthComponent implements OnDestroy {
       hostViewContainerRef.clear();
     });
   }
-
 }

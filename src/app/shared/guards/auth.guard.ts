@@ -51,7 +51,10 @@ export class AuthGuard
     return this.store.select('auth').pipe(
       take(1),
       map((authState) => {
-        const isAuth = !!authState.user;
+        return authState.user;
+      }),
+      map((user) => {
+        const isAuth = !!user;
         if (isAuth) {
           return true;
         } else {

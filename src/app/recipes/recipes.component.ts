@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css']
+  styleUrls: ['./recipes.component.css'],
 })
 export class RecipesComponent {
   // selectedRecipe: Recipe;
@@ -17,9 +17,11 @@ export class RecipesComponent {
   //   console.log(recipe);
   // }
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private dataStorageService: DataStorageService,
-    private recipeService: RecipeService) { }
+    private recipeService: RecipeService
+  ) {}
 
   ngOnInit() {
     // this.recipeService.selectedRecipeId.subscribe((recipe: Recipe) => {
@@ -32,7 +34,6 @@ export class RecipesComponent {
       this.dataStorageService.fetchRecipes().subscribe();
     }
 
-
     // with Subject Operator from rxjs
     // this.recipeService.selectedRecipeId.subscribe((recipe: Recipe) => {
     //   this.selectedRecipe = recipe;
@@ -43,5 +44,4 @@ export class RecipesComponent {
   // ngOnDestroy(){
   //   this.recipeService.selectedRecipeId.unsubscribe();
   // }
-
 }
