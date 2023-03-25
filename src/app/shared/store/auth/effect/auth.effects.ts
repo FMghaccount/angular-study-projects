@@ -13,14 +13,94 @@ import {
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { User } from 'src/app/shared/models/user.model';
+// import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 // import { Observable } from 'redux';
+
+const handleAuthentication = (resData: AuthResponseData) => {
+  const expirationDate = new Date(
+    new Date().getTime() + +resData.expiresIn * 1000
+  );
+  const user = new User(
+    resData.email,
+    resData.localId,
+    resData.idToken,
+    expirationDate
+  );
+  localStorage.setItem('userData', JSON.stringify(user));
+  return new AuthActions.AuthenticateSuccess({
+    email: resData.email,
+    userId: resData.localId,
+    token: resData.idToken,
+    expirationDate: expirationDate,
+  });
+};
+
+const handleError = (errorRes: HttpErrorResponse) => {
+  let errorMessage = 'خطا رخ داده است. لطفاً بعد از مدتی دوباره امتحان کنید';
+  if (!errorRes.error || !errorRes.error.error) {
+    return of(new AuthActions.AuthenticateFail(errorMessage));
+  }
+  switch (errorRes.error.error.message) {
+    case 'EMAIL_EXISTS':
+      errorMessage = 'ایمیل شما توسط حساب کاربری دیگری ثبت شده است';
+      break;
+    case 'OPERATION_NOT_ALLOWED':
+      errorMessage = 'ورود با رمز عبور غیر فعال شده است';
+      break;
+    case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+      errorMessage =
+        'با توجه به فعالیت های غیر معمول شما، ورود با این دستگاه غیر فعال شده است';
+      break;
+    case 'EMAIL_NOT_FOUND':
+      errorMessage =
+        'حساب کاربری با ایمیل مورد نظر شما موجود نمی باشد یا حساب کاربری حذف شده است';
+      break;
+    case 'INVALID_PASSWORD':
+      errorMessage = 'ایمیل یا رمز عبور وارد شده نامعتبر است';
+      break;
+    case 'USER_DISABLED':
+      errorMessage = 'حساب کاربری شما توسط مدیریت غیر فعال شده است';
+      break;
+
+    default:
+      break;
+  }
+  return of(new AuthActions.AuthenticateFail(errorMessage));
+};
 
 @Injectable()
 export class AuthEffects {
-  authLogin = createEffect(() => {
+  authSignUp = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.LOGIN_START),
-      switchMap((authData: AuthActions.LoginStart) => {
+      ofType(AuthActions.SIGNUP_START),
+      switchMap((authData: AuthActions.SignupStart) => {
+        return this.http
+          .post<AuthResponseData>(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
+              environment.firebaseApiKey,
+            {
+              email: authData.payload.email,
+              password: authData.payload.password,
+              returnSecureToken: true,
+            }
+          )
+          .pipe(
+            map((resData) => {
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+              return handleAuthentication(resData);
+            }),
+            catchError((errorRes: HttpErrorResponse) => {
+              return handleError(errorRes);
+            })
+          );
+      })
+    );
+  });
+
+  authSignIn = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.SIGNIN_START),
+      switchMap((authData: AuthActions.SignInStart) => {
         return this.http
           .post<AuthResponseData>(
             'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
@@ -33,56 +113,11 @@ export class AuthEffects {
           )
           .pipe(
             map((resData) => {
-              const expirationDate = new Date(
-                new Date().getTime() + +resData.expiresIn * 1000
-              );
-              const user = new User(
-                resData.email,
-                resData.localId,
-                resData.idToken,
-                expirationDate
-              );
-              this.authService.autoLogout(+resData.expiresIn * 1000);
-              localStorage.setItem('userData', JSON.stringify(user));
-              return new AuthActions.Login({
-                email: resData.email,
-                userId: resData.localId,
-                token: resData.idToken,
-                expirationDate: expirationDate,
-              });
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+              return handleAuthentication(resData);
             }),
             catchError((errorRes: HttpErrorResponse) => {
-              let errorMessage =
-                'خطا رخ داده است. لطفاً بعد از مدتی دوباره امتحان کنید';
-              if (!errorRes.error || !errorRes.error.error) {
-                return of(new AuthActions.LoginFail(errorMessage));
-              }
-              switch (errorRes.error.error.message) {
-                case 'EMAIL_EXISTS':
-                  errorMessage = 'ایمیل شما توسط حساب کاربری دیگری ثبت شده است';
-                  break;
-                case 'OPERATION_NOT_ALLOWED':
-                  errorMessage = 'ورود با رمز عبور غیر فعال شده است';
-                  break;
-                case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-                  errorMessage =
-                    'با توجه به فعالیت های غیر معمول شما، ورود با این دستگاه غیر فعال شده است';
-                  break;
-                case 'EMAIL_NOT_FOUND':
-                  errorMessage =
-                    'حساب کاربری با ایمیل مورد نظر شما موجود نمی باشد یا حساب کاربری حذف شده است';
-                  break;
-                case 'INVALID_PASSWORD':
-                  errorMessage = 'ایمیل یا رمز عبور وارد شده نامعتبر است';
-                  break;
-                case 'USER_DISABLED':
-                  errorMessage = 'حساب کاربری شما توسط مدیریت غیر فعال شده است';
-                  break;
-
-                default:
-                  break;
-              }
-              return of(new AuthActions.LoginFail(errorMessage));
+              return handleError(errorRes);
             })
           );
       })
@@ -90,22 +125,87 @@ export class AuthEffects {
   });
 
   // @Effect({ dispatch: false })
-  authSuccess = createEffect(
+  authRedirect = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AuthActions.LOGIN),
-        tap(() => {
-          this.router.navigate(['/']);
+        ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+        tap((action: AuthActions.AuthenticateSuccess | AuthActions.Logout) => {
+          if (action.type === AuthActions.AUTHENTICATE_SUCCESS) {
+            console.log(this.router.url);
+            if (this.router.url === '/auth') this.router.navigate(['/']);
+          }
+          if (action.type === AuthActions.LOGOUT) {
+            this.router.navigate(['/auth']);
+          }
         })
       );
     },
     { dispatch: false }
   );
 
+  authLogout = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.LOGOUT),
+        tap(() => {
+          if (localStorage.getItem('userData'))
+            localStorage.removeItem('userData');
+          this.authService.clearLogoutTimer();
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  authLogin = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.AUTO_LOGIN),
+      map(() => {
+        const userData: {
+          email: string;
+          id: string;
+          _token: string;
+          _tokenExpirationDate: string;
+        } = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userData) {
+          return new AuthActions.Logout();
+          // this.user.next(null);
+          // return;
+        }
+
+        const loadedUser = new User(
+          userData.email,
+          userData.id,
+          userData._token,
+          new Date(userData._tokenExpirationDate)
+        );
+
+        if (loadedUser.token) {
+          const expirationDuration =
+            new Date(userData._tokenExpirationDate).getTime() -
+            new Date().getTime();
+          this.authService.setLogoutTimer(+expirationDuration);
+          return new AuthActions.AuthenticateSuccess({
+            email: loadedUser.email,
+            userId: loadedUser.id,
+            token: loadedUser.token,
+            expirationDate: new Date(userData._tokenExpirationDate),
+          });
+          // const expirationDuration =
+          //   new Date(userData._tokenExpirationDate).getTime() -
+          //   new Date().getTime();
+          // this.autoLogout(expirationDuration);
+        } else return new AuthActions.Logout();
+      })
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private http: HttpClient,
     private router: Router,
+    // private activatedRoute: ActivatedRoute,
     private authService: AuthService
   ) {}
 }

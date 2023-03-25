@@ -19,7 +19,7 @@ export class RecipesComponent {
   // }
 
   constructor(
-    private authService: AuthService,
+    // private authService: AuthService,
     private dataStorageService: DataStorageService,
     private recipeService: RecipeService
   ) {}
@@ -29,7 +29,7 @@ export class RecipesComponent {
     //   this.selectedRecipe = recipe;
     // })
 
-    this.authService.autoLogin();
+    // this.authService.autoLogin();
     const recipes = this.recipeService.getRecipes();
     if (recipes.length === 0) {
       this.dataStorageService.fetchRecipes().subscribe();
