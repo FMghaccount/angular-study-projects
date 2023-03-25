@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import { RecipeService } from './../shared/services/recipe.service';
 import { DataStorageService } from './../shared/services/data-storage.service';
-import { AuthService } from './../shared/services/auth.service';
+// import { AuthService } from './../shared/services/auth.service';
 
 @Component({
   selector: 'app-recipes',

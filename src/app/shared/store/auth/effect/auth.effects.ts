@@ -4,17 +4,27 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { switchMap, tap } from 'rxjs/operators';
 import { of, catchError, map } from 'rxjs';
+import { Router } from '@angular/router';
 
 import * as AuthActions from '../action/auth.actions';
 import {
-  AuthResponseData,
+  // AuthResponseData,
   AuthService,
 } from 'src/app/shared/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
 import { User } from 'src/app/shared/models/user.model';
 // import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 // import { Observable } from 'redux';
+
+export interface AuthResponseData {
+  kind: string;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+  registered?: boolean;
+}
 
 const handleAuthentication = (resData: AuthResponseData) => {
   const expirationDate = new Date(

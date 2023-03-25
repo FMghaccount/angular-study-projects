@@ -1,6 +1,6 @@
 // import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   Component,
@@ -9,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 // import { AuthResponseData } from '../shared/services/auth.service';
 // import { AuthService, AuthResponseData } from '../shared/services/auth.service';
@@ -17,7 +18,6 @@ import { PlaceholderDirective } from './../shared/placeholder/placeholder.direct
 import * as fromApp from '../shared/store/app.reducer';
 import * as AuthActions from '../shared/store/auth/action/auth.actions';
 import { User } from '../shared/models/user.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
