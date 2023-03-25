@@ -1,8 +1,9 @@
+// import { Recipe } from '../shared/models/recipe.model';
+import { Component } from '@angular/core';
+
 import { RecipeService } from './../shared/services/recipe.service';
 import { DataStorageService } from './../shared/services/data-storage.service';
 import { AuthService } from './../shared/services/auth.service';
-// import { Recipe } from '../shared/models/recipe.model';
-import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-recipes',

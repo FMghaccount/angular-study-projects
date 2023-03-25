@@ -3,7 +3,8 @@ import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError, BehaviorSubject } from 'rxjs';
+// import { catchError, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
@@ -144,7 +145,6 @@ export class AuthService {
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
-    console.log(user);
     this.store.dispatch(
       new AuthActions.Login({
         email: email,
@@ -154,7 +154,6 @@ export class AuthService {
       })
     );
     // this.user.next(user);
-
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }

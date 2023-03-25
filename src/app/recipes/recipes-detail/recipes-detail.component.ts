@@ -1,28 +1,34 @@
-import { Subscription, interval } from 'rxjs';
-import { RecipeService } from './../../shared/services/recipe.service';
-import { Recipe } from '../../shared/models/recipe.model';
+// import { Subscription, interval } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+
+import { RecipeService } from './../../shared/services/recipe.service';
+import { Recipe } from '../../shared/models/recipe.model';
 
 @Component({
   selector: 'app-recipes-detail',
   templateUrl: './recipes-detail.component.html',
-  styleUrls: ['./recipes-detail.component.css']
+  styleUrls: ['./recipes-detail.component.css'],
 })
 export class RecipesDetailComponent implements OnDestroy {
   @Input() recipe: Recipe;
   recipeId: number;
   subscription: Subscription;
 
-  constructor(private recipeService: RecipeService,
+  constructor(
+    private recipeService: RecipeService,
     private activateRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.recipe = this.recipeService.getRecipe(+this.activateRoute.snapshot.params['id']);
+    this.recipe = this.recipeService.getRecipe(
+      +this.activateRoute.snapshot.params['id']
+    );
     this.activateRoute.params.subscribe((params: Params) => {
-      this.recipe = this.recipeService.getRecipe(+params['id'])
-      this.recipeId = +params['id']
+      this.recipe = this.recipeService.getRecipe(+params['id']);
+      this.recipeId = +params['id'];
       // if (!this.recipeService.getRecipe(+params['id'])) {
       //   this.router.navigate(['/recipes']);
       // }
@@ -30,11 +36,13 @@ export class RecipesDetailComponent implements OnDestroy {
       //   this.recipe = this.recipeService.getRecipe(+params['id'])
       //   this.recipeId = +params['id']
       // }
-    })
+    });
 
-    this.subscription = this.recipeService.recipeList.subscribe((recipes: Recipe[]) => {
-      this.recipe = recipes[this.recipeId];
-    })
+    this.subscription = this.recipeService.recipeList.subscribe(
+      (recipes: Recipe[]) => {
+        this.recipe = recipes[this.recipeId];
+      }
+    );
   }
 
   addToIngredients(ingredients) {
@@ -42,18 +50,17 @@ export class RecipesDetailComponent implements OnDestroy {
   }
 
   onEdit() {
-    this.router.navigate(['edit'], { relativeTo: this.activateRoute })
+    this.router.navigate(['edit'], { relativeTo: this.activateRoute });
   }
 
   onRemove() {
-    let confirmation = confirm('آیا اطمینان دارید؟')
+    let confirmation = confirm('آیا اطمینان دارید؟');
     if (confirmation) {
       this.recipeService.removeRecipe(this.recipeId);
       this.router.navigate(['/recipes']);
     } else {
-      return
+      return;
     }
-
   }
 
   ngOnDestroy(): void {
