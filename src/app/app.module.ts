@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { AuthEffects } from './shared/store/auth/effect/auth.effects';
 import { CoreModule } from './core.module';
@@ -12,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import * as fromApp from './shared/store/app.reducer';
+import { environment } from 'src/environments/environment.development';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -22,6 +25,8 @@ import * as fromApp from './shared/store/app.reducer';
     CoreModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({ logOnly: environment.production }),
+    StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
   ],
   bootstrap: [AppComponent],

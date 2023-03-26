@@ -9,7 +9,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 
 // import { AuthResponseData } from '../shared/services/auth.service';
 // import { AuthService, AuthResponseData } from '../shared/services/auth.service';
@@ -36,7 +36,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   constructor(
     // private authService: AuthService,
-    private router: Router,
+    // private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     private store: Store<fromApp.AppState>
   ) {}
