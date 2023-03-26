@@ -3,65 +3,135 @@
     <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
       <div class="row mb-3">
         <div class="col-12">
-          <p class="help-block color-red" *ngIf="!recipeForm.valid && recipeForm.touched">
-            لطفاً مقادیر خواسته شده در فرم را تکمیل کنید</p>
+          <p
+            class="help-block color-red"
+            *ngIf="!recipeForm.valid && recipeForm.touched"
+          >
+            لطفاً مقادیر خواسته شده در فرم را تکمیل کنید
+          </p>
           <!-- <button class="btn btn-success me-3" type="submit" (click)="onAddIngredients()">ذخیره</button> -->
-          <button [disabled]="!recipeForm.valid" class="btn btn-success me-3" [disabled]="!recipeForm.valid"
-            type="submit">ثبت</button>
-          <button class="btn btn-danger me-3" type="button" (click)="onCancel()">لغو</button>
+          <button
+            [disabled]="!recipeForm.valid"
+            class="btn btn-success me-3"
+            [disabled]="!recipeForm.valid"
+            type="submit"
+          >
+            ثبت
+          </button>
+          <button
+            class="btn btn-danger me-3"
+            type="button"
+            (click)="onCancel()"
+          >
+            لغو
+          </button>
         </div>
       </div>
       <div class="row">
-        <div class="col-12 form-group d-flex flex-column-reverse gap-1 justify-content-end">
+        <div
+          class="col-12 form-group d-flex flex-column-reverse gap-1 justify-content-end"
+        >
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
-          <input formControlName="recipeName" type="text" id="recipeName" class="form-control">
+          <input
+            formControlName="recipeName"
+            type="text"
+            id="recipeName"
+            class="form-control"
+          />
           <label for="recipeName">عنوان</label>
         </div>
-        <p class="help-block color-red" *ngIf="!recipeName.valid && recipeName.touched">
-          <span *ngIf="recipeName.errors?.['required']">لطفاً عنوان را وارد کنید</span>
+        <p
+          class="help-block color-red"
+          *ngIf="!recipeName.valid && recipeName.touched"
+        >
+          <span *ngIf="recipeName.errors?.['required']"
+            >لطفاً عنوان را وارد کنید</span
+          >
         </p>
-        <div class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end">
+        <div
+          class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end"
+        >
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
-          <input formControlName="recipeImagePath" #imagePath type="text" id="recipeImagePath" class="form-control">
+          <input
+            formControlName="recipeImagePath"
+            #imagePath
+            type="text"
+            id="recipeImagePath"
+            class="form-control"
+          />
           <label for="recipeImagePath">تصویر</label>
         </div>
-        <p class="help-block color-red" *ngIf="!recipeImagePath.valid && recipeImagePath.touched">
-          <span *ngIf="recipeImagePath.errors?.['required']">لطفاً آدرس تصویر را وارد کنید</span>
+        <p
+          class="help-block color-red"
+          *ngIf="!recipeImagePath.valid && recipeImagePath.touched"
+        >
+          <span *ngIf="recipeImagePath.errors?.['required']"
+            >لطفاً آدرس تصویر را وارد کنید</span
+          >
         </p>
         <div class="col-12 mt-4 mb-4">
-          <img [src]="imagePath.value" alt="" class="img-fluid">
+          <img [src]="imagePath.value" alt="" class="img-fluid" />
         </div>
-        <div class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end">
+        <div
+          class="col-12 mt-3 form-group d-flex flex-column-reverse gap-1 justify-content-end"
+        >
           <!-- <p class="color-red" *ngIf="!name.valid && name.touched">لطفاً عنوان را وارد کنید</p> -->
           <!-- <input type="text" id="description" class="form-control"> -->
-          <textarea formControlName="recipeDescription" id="recipeDescription" class="form-control" rows="3"></textarea>
+          <textarea
+            formControlName="recipeDescription"
+            id="recipeDescription"
+            class="form-control"
+            rows="3"
+          ></textarea>
           <label for="recipeDescription">توضیحات</label>
         </div>
-        <p class="help-block color-red" *ngIf="!recipeDescription.valid && recipeDescription.touched">
-          <span *ngIf="recipeDescription.errors?.['required']">لطفاً توضیحات را وارد کنید</span>
+        <p
+          class="help-block color-red"
+          *ngIf="!recipeDescription.valid && recipeDescription.touched"
+        >
+          <span *ngIf="recipeDescription.errors?.['required']"
+            >لطفاً توضیحات را وارد کنید</span
+          >
         </p>
         <div class="col-12 mt-4 mb-3" formArrayName="recipeIngredients">
           <label for="recipeDescription">مواد تشکیل دهنده</label>
-          <div class="row mt-3" [formGroupName]="i" *ngFor="let ingredientCtrl of controls; let i = index">
+          <div
+            class="row mt-3"
+            [formGroupName]="i"
+            *ngFor="let ingredientCtrl of controls; let i = index"
+          >
             <div class="col-8">
-              <input type="text" formControlName="name" class="form-control">
+              <input type="text" formControlName="name" class="form-control" />
             </div>
             <div class="col-2">
-              <input type="number" min="1" formControlName="amount" class="form-control">
+              <input
+                type="number"
+                min="1"
+                formControlName="amount"
+                class="form-control"
+              />
             </div>
             <div class="col-2">
-              <button class="btn btn-danger w-100" (click)="onRemoveIngredient(i)">حذف</button>
+              <button
+                class="btn btn-danger w-100"
+                (click)="onRemoveIngredient(i)"
+              >
+                X
+              </button>
             </div>
           </div>
         </div>
-        <hr>
+        <hr />
         <div class="col-12">
-          <button type="button" class="btn btn-success" (click)="onAddIngredient()">
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="onAddIngredient()"
+          >
             افزودن مواد اولیه
           </button>
         </div>
       </div>
-
     </form>
   </div>
 </div>

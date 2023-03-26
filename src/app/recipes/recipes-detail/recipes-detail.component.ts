@@ -1,10 +1,12 @@
 // import { Subscription, interval } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Subscription, map, switchMap } from 'rxjs';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { RecipeService } from './../../shared/services/recipe.service';
 import { Recipe } from '../../shared/models/recipe.model';
+import * as fromApp from '../../shared/store/app.reducer';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -19,30 +21,51 @@ export class RecipesDetailComponent implements OnDestroy {
   constructor(
     private recipeService: RecipeService,
     private activateRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit() {
-    this.recipe = this.recipeService.getRecipe(
-      +this.activateRoute.snapshot.params['id']
-    );
-    this.activateRoute.params.subscribe((params: Params) => {
-      this.recipe = this.recipeService.getRecipe(+params['id']);
-      this.recipeId = +params['id'];
-      // if (!this.recipeService.getRecipe(+params['id'])) {
-      //   this.router.navigate(['/recipes']);
-      // }
-      // else {
-      //   this.recipe = this.recipeService.getRecipe(+params['id'])
-      //   this.recipeId = +params['id']
-      // }
-    });
+    // this.recipe = this.recipeService.getRecipe(
+    //   +this.activateRoute.snapshot.params['id']
+    // );
+    // this.activateRoute.params.subscribe((params: Params) => {
+    //   this.recipe = this.recipeService.getRecipe(+params['id']);
+    //   this.recipeId = +params['id'];
+    //   // if (!this.recipeService.getRecipe(+params['id'])) {
+    //   //   this.router.navigate(['/recipes']);
+    //   // }
+    //   // else {
+    //   //   this.recipe = this.recipeService.getRecipe(+params['id'])
+    //   //   this.recipeId = +params['id']
+    //   // }
+    // });
 
-    this.subscription = this.recipeService.recipeList.subscribe(
-      (recipes: Recipe[]) => {
-        this.recipe = recipes[this.recipeId];
-      }
-    );
+    // this.subscription = this.recipeService.recipeList.subscribe(
+    //   (recipes: Recipe[]) => {
+    //     this.recipe = recipes[this.recipeId];
+    //   }
+    // );
+    this.subscription = this.activateRoute.params
+      .pipe(
+        map((params) => {
+          return +params['id'];
+        }),
+        switchMap((id) => {
+          this.recipeId = id;
+          return this.store.select('recipes');
+        }),
+        map((recipesState) => {
+          return recipesState.recipes.find((recipe, index) => {
+            return index === this.recipeId;
+          });
+        })
+      )
+      .subscribe((recipe) => {
+        if (!recipe) {
+          this.router.navigate(['/recipes']);
+        } else this.recipe = recipe;
+      });
   }
 
   addToIngredients(ingredients) {

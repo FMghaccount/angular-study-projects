@@ -141,7 +141,6 @@ export class AuthEffects {
         ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
         tap((action: AuthActions.AuthenticateSuccess | AuthActions.Logout) => {
           if (action.type === AuthActions.AUTHENTICATE_SUCCESS) {
-            console.log(this.router.url);
             if (this.router.url === '/auth') this.router.navigate(['/']);
           }
           if (action.type === AuthActions.LOGOUT) {

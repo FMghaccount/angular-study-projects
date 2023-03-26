@@ -6,11 +6,12 @@ import { Subject } from 'rxjs';
 // import { ShoppingListService } from './shopping-list.service';
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/ingredient.model';
-import * as ShoppingListActions from '../store/shopping-list/action/shopping-list.actions'
-import * as fromApp from '../store/app.reducer'
+import * as ShoppingListActions from '../store/shopping-list/action/shopping-list.actions';
+import * as fromApp from '../store/app.reducer';
+import * as RecipesActions from '../store/recipes/action/recipes.actions';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RecipeService {
   // selectedRecipe = new EventEmitter<Recipe>();
@@ -36,7 +37,7 @@ export class RecipeService {
   //     ])
   // ];
 
-  private recipes: Recipe[] = []
+  private recipes: Recipe[] = [];
 
   getRecipes() {
     // return this.recipes.slice();
@@ -45,7 +46,8 @@ export class RecipeService {
 
   setRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
-    this.recipeList.next(this.recipes)
+    this.recipeList.next(this.recipes);
+    // this.store.dispatch(new RecipesActions.FetchRecipes());
   }
 
   getRecipe(id: number) {
@@ -54,28 +56,32 @@ export class RecipeService {
 
   addToIngredientsFromRecipeDetail(ingredients: Ingredient[]) {
     // this.slService.addIngredientsFromRecipeDetail(ingredients)
-    this.store.dispatch(new ShoppingListActions.addIngredients(ingredients))
+    this.store.dispatch(new ShoppingListActions.addIngredients(ingredients));
   }
 
   addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
     // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes)
+    this.recipeList.next(this.recipes);
+  }
+
+  fetchRecipesWithNgrx() {
+    this.store.dispatch(new RecipesActions.FetchRecipes());
   }
 
   updateRecipe(index: number, newRecipe: Recipe) {
     this.recipes[index] = newRecipe;
 
     // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes)
+    this.recipeList.next(this.recipes);
   }
 
   removeRecipe(id: number) {
-    this.recipes.splice(id, 1)
+    this.recipes.splice(id, 1);
     // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes)
+    this.recipeList.next(this.recipes);
   }
 
   // constructor(private slService: ShoppingListService, private store: Store<fromApp.AppState>) { }
-  constructor(private store: Store<fromApp.AppState>) { }
+  constructor(private store: Store<fromApp.AppState>) {}
 }
