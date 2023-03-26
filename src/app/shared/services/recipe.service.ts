@@ -41,17 +41,30 @@ export class RecipeService {
 
   getRecipes() {
     // return this.recipes.slice();
-    return this.recipes;
+    // return this.recipes;
+
+    // where ever this method is used it should subscribe to this method
+    return this.store.select('recipes');
   }
 
   setRecipes(recipes: Recipe[]) {
-    this.recipes = recipes;
-    this.recipeList.next(this.recipes);
-    // this.store.dispatch(new RecipesActions.FetchRecipes());
+    // this.recipes = recipes;
+    // this.recipeList.next(this.recipes);
+    this.store.dispatch(new RecipesActions.SetRecipes(recipes));
   }
 
-  getRecipe(id: number) {
-    return this.recipes[id];
+  // getRecipe(id: number) {
+  //   // return this.recipes[id];
+
+  //   // where ever this method is used it should subscribe to this method
+  //   return this.store.select('recipes');
+  // }
+
+  getRecipe() {
+    // return this.recipes[id];
+
+    // where ever this method is used it should subscribe to this method
+    return this.store.select('recipes');
   }
 
   addToIngredientsFromRecipeDetail(ingredients: Ingredient[]) {
@@ -60,9 +73,10 @@ export class RecipeService {
   }
 
   addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
-    // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes);
+    // this.recipes.push(recipe);
+    // // this.recipeList.next(this.recipes.slice())
+    // this.recipeList.next(this.recipes);
+    this.store.dispatch(new RecipesActions.AddRecipe(recipe));
   }
 
   fetchRecipesWithNgrx() {
@@ -70,16 +84,20 @@ export class RecipeService {
   }
 
   updateRecipe(index: number, newRecipe: Recipe) {
-    this.recipes[index] = newRecipe;
+    // this.recipes[index] = newRecipe;
 
-    // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes);
+    // // this.recipeList.next(this.recipes.slice())
+    // this.recipeList.next(this.recipes);
+    this.store.dispatch(
+      new RecipesActions.UpdateRecipe({ index: index, newRecipe: newRecipe })
+    );
   }
 
   removeRecipe(id: number) {
-    this.recipes.splice(id, 1);
+    // this.recipes.splice(id, 1);
     // this.recipeList.next(this.recipes.slice())
-    this.recipeList.next(this.recipes);
+    // this.recipeList.next(this.recipes);
+    this.store.dispatch(new RecipesActions.DeleteRecipe(id));
   }
 
   // constructor(private slService: ShoppingListService, private store: Store<fromApp.AppState>) { }

@@ -1,8 +1,9 @@
+import { Subscription } from 'rxjs';
 // import { exhaustMap, take } from 'rxjs/operators';
 import { map, tap } from 'rxjs';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { environment } from 'src/environments/environment';
@@ -15,30 +16,38 @@ import * as RecipesActions from '../store/recipes/action/recipes.actions';
 @Injectable({
   providedIn: 'root',
 })
-export class DataStorageService {
+export class DataStorageService implements OnDestroy {
   recipes: Recipe[] = [];
+  recipeStoreSub: Subscription;
 
   constructor(
     private http: HttpClient,
     private recipeService: RecipeService,
-    private store: Store<fromApp.AppState>
-  ) // private authService: AuthService
-  {}
+    private store: Store<fromApp.AppState> // private authService: AuthService
+  ) {}
 
   storeRecipes() {
-    this.recipes = this.recipeService.getRecipes();
-    if (this.recipes.length > 0) {
-      this.http
-        .put(environment.firebaseApiUrl + '/recipes.json', this.recipes, {
-          observe: 'response',
-        })
-        .subscribe((responseData) => {
-          console.log(responseData);
-          if (responseData.ok) {
-            alert('درخواست شما با موفقیت ارسال شد');
-          } else alert('ارسال درخواست شما با خطا روبرو شده است');
-        });
-    } else alert('لیست دستورهای پخت خالی است');
+    // this.recipes = this.recipeService.getRecipes();
+    // this.recipeStoreSub = this.recipeService
+    //   .getRecipes()
+    //   .subscribe((recipesState) => {
+    //     this.recipes = recipesState.recipes;
+    //   });
+    // if (this.recipes.length > 0) {
+    //   // this.http
+    //   //   .put(environment.firebaseApiUrl + '/recipes.json', this.recipes, {
+    //   //     observe: 'response',
+    //   //   })
+    //   //   .subscribe((responseData) => {
+    //   //     console.log(responseData);
+    //   //     if (responseData.ok) {
+    //   //       alert('درخواست شما با موفقیت ارسال شد');
+    //   //     } else alert('ارسال درخواست شما با خطا روبرو شده است');
+    //   //   });
+
+    // } else alert('لیست دستورهای پخت خالی است');
+
+    this.store.dispatch(new RecipesActions.StoreRecipes());
   }
 
   fetchRecipes() {
@@ -79,5 +88,9 @@ export class DataStorageService {
           this.store.dispatch(new RecipesActions.SetRecipes(recipes));
         })
       );
+  }
+
+  ngOnDestroy(): void {
+    if (this.recipeStoreSub) this.recipeStoreSub.unsubscribe();
   }
 }

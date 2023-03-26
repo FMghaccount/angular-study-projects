@@ -5,6 +5,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { switchMap, tap } from 'rxjs/operators';
 import { of, catchError, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import * as AuthActions from '../action/auth.actions';
 import {
@@ -13,6 +14,8 @@ import {
 } from 'src/app/shared/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/shared/models/user.model';
+import * as fromApp from '../../app.reducer';
+import * as RecipesActions from '../../recipes/action/recipes.actions';
 // import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 // import { Observable } from 'redux';
 
@@ -159,6 +162,7 @@ export class AuthEffects {
         tap(() => {
           if (localStorage.getItem('userData'))
             localStorage.removeItem('userData');
+          // this.store.dispatch(new RecipesActions.clearRecipes());
           this.authService.clearLogoutTimer();
         })
       );
@@ -178,6 +182,7 @@ export class AuthEffects {
         } = JSON.parse(localStorage.getItem('userData'));
 
         if (!userData) {
+          // this.store.dispatch(new RecipesActions.clearRecipes());
           return new AuthActions.Logout();
           // this.user.next(null);
           // return;
@@ -205,7 +210,10 @@ export class AuthEffects {
           //   new Date(userData._tokenExpirationDate).getTime() -
           //   new Date().getTime();
           // this.autoLogout(expirationDuration);
-        } else return new AuthActions.Logout();
+        } else {
+          // this.store.dispatch(new RecipesActions.clearRecipes());
+          return new AuthActions.Logout();
+        }
       })
     );
   });
@@ -215,6 +223,7 @@ export class AuthEffects {
     private http: HttpClient,
     private router: Router,
     // private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromApp.AppState>
   ) {}
 }

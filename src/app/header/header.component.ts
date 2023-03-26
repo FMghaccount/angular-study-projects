@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 // import { AuthService } from './../shared/services/auth.service';
-import { DataStorageService } from './../shared/services/data-storage.service';
+// import { DataStorageService } from './../shared/services/data-storage.service';
 import * as fromApp from '../shared/store/app.reducer';
 import * as AuthActions from '../shared/store/auth/action/auth.actions';
 import * as RecipesActions from '../shared/store/recipes/action/recipes.actions';
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // })
 
   constructor(
-    private dataStorageService: DataStorageService,
+    // private dataStorageService: DataStorageService,
     // private authService: AuthService,
     private store: Store<fromApp.AppState>
   ) {}
@@ -43,7 +43,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSaveRecipes() {
-    this.dataStorageService.storeRecipes();
+    // this.dataStorageService.storeRecipes();
+    this.store.dispatch(new RecipesActions.StoreRecipes());
   }
 
   onFetchRecipes() {
@@ -52,6 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    // this.store.dispatch(new RecipesActions.clearRecipes());
     this.store.dispatch(new AuthActions.Logout());
     // this.authService.logout();
   }

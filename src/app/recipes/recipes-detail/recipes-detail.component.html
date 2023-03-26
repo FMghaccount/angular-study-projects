@@ -39,7 +39,7 @@
 </div> -->
 <div *ngIf="recipe; else noRecipe" class="row mt-5 mt-md-0">
   <div class="col-12">
-    <img [src]="recipe.imagePath" alt="" class="img-fluid image">
+    <img [src]="recipe.imagePath" alt="" class="img-fluid image" />
   </div>
 </div>
 <div *ngIf="recipe; else noRecipe" class="row mt-4">
@@ -47,14 +47,31 @@
     <h3 class="lh-base pe-2">{{ recipe.name }}</h3>
     <div class="btn-group" role="group" aria-label="َActions List">
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          type="button"
+          class="btn btn-primary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           مدیریت <span class="caret"></span>
         </button>
         <ul class="dropdown-menu btn-group-detail-component">
-          <li class="dropdown-item pointer"><a class="text-decoration-none"
-              (click)="addToIngredients(recipe.ingredients)">افزودن به لیست خرید</a></li>
-          <li class="dropdown-item pointer"><a class="text-decoration-none" (click)="onEdit()">ویرایش</a></li>
-          <li class="dropdown-item pointer"><a class="text-decoration-none" (click)="onRemove()">حذف</a></li>
+          <li
+            *ngIf="recipe.ingredients.length !== 0"
+            class="dropdown-item pointer"
+          >
+            <a
+              class="text-decoration-none"
+              (click)="addToIngredients(recipe.ingredients)"
+              >افزودن به لیست خرید</a
+            >
+          </li>
+          <li class="dropdown-item pointer">
+            <a class="text-decoration-none" (click)="onEdit()">ویرایش</a>
+          </li>
+          <li class="dropdown-item pointer">
+            <a class="text-decoration-none" (click)="onRemove()">حذف</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -68,8 +85,11 @@
 <div *ngIf="recipe; else noRecipe" class="row mt-3">
   <div class="col-12">
     <ul class="list-group">
-      <li class="list-group-item list-group-item-action" style="cursor: pointer"
-        *ngFor="let ingredient of recipe.ingredients let i = index">
+      <li
+        class="list-group-item list-group-item-action"
+        style="cursor: pointer"
+        *ngFor="let ingredient of recipe.ingredients; let i = index"
+      >
         {{ ingredient.name }} - (تعداد: {{ ingredient.amount }})
       </li>
     </ul>

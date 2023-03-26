@@ -2,7 +2,7 @@
 import { Component, Input } from '@angular/core';
 // import { OnDestroy } from '@angular/core';
 
-import { RecipeService } from './../../../shared/services/recipe.service';
+// import { RecipeService } from './../../../shared/services/recipe.service';
 import { Recipe } from '../../../shared/models/recipe.model';
 
 @Component({
@@ -15,7 +15,7 @@ export class RecipesItemComponent {
   @Input() recipeId: number;
   // @Output() selectedRecipe = new EventEmitter<void>();
 
-  constructor(private recipeService: RecipeService) {}
+  // constructor(private recipeService: RecipeService) {}
 
   // with EventEmitter
   // onSelect() {

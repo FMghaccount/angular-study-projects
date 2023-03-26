@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -8,7 +8,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable, take, map } from 'rxjs';
+import { Observable, take, map, interval, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 // import { Recipe } from './../models/recipe.model';
@@ -22,7 +22,7 @@ import { Recipe } from '../models/recipe.model';
   providedIn: 'root',
 })
 export class RecipeDetailGuard
-  implements CanActivate, CanActivateChild, CanDeactivate<unknown>
+  implements CanActivate, CanActivateChild, CanDeactivate<unknown>, OnDestroy
 {
   constructor(
     // private recipeService: RecipeService,
@@ -30,6 +30,14 @@ export class RecipeDetailGuard
     private router: Router,
     private store: Store<fromApp.AppState> // private dataStorageService: DataStorageService
   ) {}
+
+  storeSub: Subscription;
+  intervalSub: Subscription;
+
+  ngOnDestroy(): void {
+    if (this.storeSub) this.storeSub.unsubscribe();
+    if (this.intervalSub) this.intervalSub.unsubscribe();
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -41,7 +49,7 @@ export class RecipeDetailGuard
     | UrlTree {
     // const recipe = this.recipeService.getRecipe(+route.params['id']);
     let recipes: Recipe[] = [];
-    this.store
+    this.storeSub = this.store
       .select('recipes')
       .pipe(take(1))
       .subscribe((recipesState) => {

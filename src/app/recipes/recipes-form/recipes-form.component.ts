@@ -2,11 +2,12 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { map, switchMap, Subscription } from 'rxjs';
 
-import { RecipeService } from './../../shared/services/recipe.service';
+import * as RecipesActions from './../../shared/store/recipes/action/recipes.actions';
+// import { RecipeService } from './../../shared/services/recipe.service';
 import { Recipe } from './../../shared/models/recipe.model';
 import * as fromApp from '../../shared/store/app.reducer';
-import { map, switchMap, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipes-form',
@@ -22,46 +23,47 @@ export class RecipesFormComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private recipeService: RecipeService,
+    // private recipeService: RecipeService,
     private router: Router,
     private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit() {
     // this.recipeForm = new FormGroup({
-    //   'recipeName': new FormControl(null, [Validators.required]),
-    //   'recipeDescription': new FormControl(null, [Validators.required, Validators.email]),
-    //   'recipeImagePath': new FormControl('Critical')
+    //   recipeName: new FormControl(null, [Validators.required]),
+    //   recipeDescription: new FormControl(null, [
+    //     Validators.required,
+    //     Validators.email,
+    //   ]),
+    //   recipeImagePath: new FormControl('Critical'),
     // });
-    // this.activatedRoute.params.subscribe((params: Params) => {
-    //   this.id = +params['id'];
-    //   this.editMode = params['id'] != null;
-    //   this.initForm();
-    // });
-    this.subscription = this.activatedRoute.params
-      .pipe(
-        map((params) => {
-          return +params['id'];
-        }),
-        switchMap((id) => {
-          this.id = id;
-          return this.store.select('recipes');
-        }),
-        map((recipesState) => {
-          return recipesState.recipes.find((recipe, index) => {
-            return index === this.id;
-          });
-        })
-      )
-      .subscribe((recipe) => {
-        if (!recipe) {
-          this.router.navigate(['/recipes']);
-        } else {
-          this.recipe = recipe;
-          this.editMode = this.id != null;
-          this.initForm();
-        }
-      });
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.id = +params['id'];
+      this.editMode = params['id'] != null;
+      this.initForm();
+    });
+    // this.subscription = this.activatedRoute.params
+    //   .pipe(
+    //     map((params) => {
+    //       return +params['id'];
+    //     }),
+    //     switchMap((id) => {
+    //       this.id = id;
+    //       return this.store.select('recipes');
+    //     }),
+    //     map((recipesState) => {
+    //       return recipesState.recipes.find((recipe, index) => {
+    //         return index === this.id;
+    //       });
+    //     })
+    //   )
+    //   .subscribe((recipe) => {
+    //     if (recipe) {
+    //       this.recipe = recipe;
+    //     }
+    //     this.editMode = this.id != null;
+    //     this.initForm();
+    //   });
   }
 
   get controls() {
@@ -91,22 +93,33 @@ export class RecipesFormComponent {
 
     if (this.editMode) {
       // this.recipe = this.recipeService.getRecipe(this.id);
-      recipeName = this.recipe.name;
-      recipeDescription = this.recipe.description;
-      recipeImagePath = this.recipe.imagePath;
-      if (this.recipe['ingredients']) {
-        for (let ingredient of this.recipe.ingredients) {
-          recipeIngredients.push(
-            new FormGroup({
-              name: new FormControl(ingredient.name, Validators.required),
-              amount: new FormControl(ingredient.amount, [
-                Validators.required,
-                Validators.min(1),
-              ]),
-            })
-          );
-        }
-      }
+      this.subscription = this.store
+        .select('recipes')
+        .pipe(
+          map((recipeState) => {
+            return recipeState.recipes.find((recipe, index) => {
+              return index === this.id;
+            });
+          })
+        )
+        .subscribe((recipe) => {
+          recipeName = recipe.name;
+          recipeDescription = recipe.description;
+          recipeImagePath = recipe.imagePath;
+          if (recipe['ingredients']) {
+            for (let ingredient of recipe.ingredients) {
+              recipeIngredients.push(
+                new FormGroup({
+                  name: new FormControl(ingredient.name, Validators.required),
+                  amount: new FormControl(ingredient.amount, [
+                    Validators.required,
+                    Validators.min(1),
+                  ]),
+                })
+              );
+            }
+          }
+        });
     }
 
     this.recipeForm = new FormGroup({
@@ -138,7 +151,6 @@ export class RecipesFormComponent {
 
   onRemoveIngredient(id: number) {
     let confirmation = confirm('آیا اطمینان دارید؟');
-    console.log(confirmation);
     if (confirmation) {
       (<FormArray>this.recipeForm.get('recipeIngredients')).removeAt(id);
       // const recipe = this.recipeService.getRecipe(this.id);
@@ -158,14 +170,22 @@ export class RecipesFormComponent {
       this.recipeForm.value['recipeIngredients']
     );
     if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, newRecipe);
+      // this.recipeService.updateRecipe(this.id, newRecipe);
+      this.store.dispatch(
+        new RecipesActions.UpdateRecipe({
+          index: this.id,
+          newRecipe: newRecipe,
+        })
+      );
       this.router.navigate(['/recipes', this.id]);
       // this.recipeService.updateRecipe(this.id, this.recipeForm.value)
     } else {
       // this.recipeService.addRecipe(newRecipe);
-      this.recipeService.addRecipe(newRecipe);
+      // this.recipeService.addRecipe(newRecipe);
+      this.store.dispatch(new RecipesActions.AddRecipe(newRecipe));
       this.router.navigate(['/recipes']);
     }
+    this.onCancel();
   }
 
   ngOnDestroy(): void {

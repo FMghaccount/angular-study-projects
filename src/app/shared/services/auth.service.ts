@@ -10,6 +10,7 @@ import { Injectable } from '@angular/core';
 // import { environment } from 'src/environments/environment';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from '../store/auth/action/auth.actions';
+import * as RecipesActions from '../store/recipes/action/recipes.actions';
 
 // export interface AuthResponseData {
 //   kind: string;
@@ -37,6 +38,7 @@ export class AuthService {
     // console.log(expirationDuration);
     this.tokenExpirationTimer = setTimeout(() => {
       // this.logout();
+      // this.store.dispatch(new RecipesActions.clearRecipes());
       this.store.dispatch(new AuthActions.Logout());
     }, expirationDuration);
   }
@@ -98,6 +100,7 @@ export class AuthService {
 
   // logout() {
   //   // this.user.next(null);
+  // this.store.dispatch(new RecipesActions.clearRecipes());
   //   this.store.dispatch(new AuthActions.Logout());
   //   // this.router.navigate(['/auth']);
   //   localStorage.removeItem('userData');
@@ -116,6 +119,7 @@ export class AuthService {
   //   } = JSON.parse(localStorage.getItem('userData'));
 
   //   if (!userData) {
+  // this.store.dispatch(new RecipesActions.clearRecipes());
   //     this.store.dispatch(new AuthActions.Logout());
   //     // this.user.next(null);
   //     return;

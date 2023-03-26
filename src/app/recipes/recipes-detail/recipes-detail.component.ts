@@ -4,9 +4,11 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import * as RecipesActions from './../../shared/store/recipes/action/recipes.actions';
 import { RecipeService } from './../../shared/services/recipe.service';
 import { Recipe } from '../../shared/models/recipe.model';
 import * as fromApp from '../../shared/store/app.reducer';
+import * as ShoppingListActions from '../../shared/store/shopping-list/action/shopping-list.actions';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -69,7 +71,8 @@ export class RecipesDetailComponent implements OnDestroy {
   }
 
   addToIngredients(ingredients) {
-    this.recipeService.addToIngredientsFromRecipeDetail(ingredients);
+    // this.recipeService.addToIngredientsFromRecipeDetail(ingredients);
+    this.store.dispatch(new ShoppingListActions.addIngredients(ingredients));
   }
 
   onEdit() {
@@ -79,7 +82,8 @@ export class RecipesDetailComponent implements OnDestroy {
   onRemove() {
     let confirmation = confirm('آیا اطمینان دارید؟');
     if (confirmation) {
-      this.recipeService.removeRecipe(this.recipeId);
+      // this.recipeService.removeRecipe(this.recipeId);
+      this.store.dispatch(new RecipesActions.DeleteRecipe(this.recipeId));
       this.router.navigate(['/recipes']);
     } else {
       return;
