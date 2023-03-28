@@ -14,7 +14,7 @@
           <i class="bi bi-trash3-fill" (click)="onRemoveIngredient"></i>
         </div> -->
       <!-- </a> -->
-      <a [routerLink]="['/shopping-list']" [queryParams]="{ id: i}"
+      <a [@shoppingListAnimation] [routerLink]="['/shopping-list']" [queryParams]="{ id: i}"
         class="list-group-item list-group-item-action d-flex justify-content-between" style="cursor: pointer"
         *ngFor="let ingredient of ingredients; let i = index">
         <div class="info">

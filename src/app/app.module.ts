@@ -16,12 +16,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import * as fromApp from './shared/store/app.reducer';
 import { environment } from 'src/environments/environment.development';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SharedModule,
     CoreModule,
     StoreModule.forRoot(fromApp.appReducer),
