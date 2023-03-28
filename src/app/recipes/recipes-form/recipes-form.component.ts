@@ -2,7 +2,22 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { map, switchMap, Subscription } from 'rxjs';
+import {
+  map,
+  // switchMap,
+  Subscription,
+} from 'rxjs';
+import {
+  trigger,
+  // state,
+  style,
+  animate,
+  transition,
+  query,
+  stagger,
+  // keyframes,
+  // group,
+} from '@angular/animations';
 
 import * as RecipesActions from './../../shared/store/recipes/action/recipes.actions';
 // import { RecipeService } from './../../shared/services/recipe.service';
@@ -13,6 +28,36 @@ import * as fromApp from '../../shared/store/app.reducer';
   selector: 'app-recipes-form',
   templateUrl: './recipes-form.component.html',
   styleUrls: ['./recipes-form.component.css'],
+  // animations: [
+  //   trigger('ingredientsAnimation', [
+  //     transition('* <=> *', [
+  //       query(
+  //         ':enter',
+  //         [
+  //           style({ opacity: 0, transform: 'translateX(100px)' }),
+  //           stagger(
+  //             '100ms',
+  //             animate(
+  //               '600ms ease-in-out',
+  //               style({ opacity: 1, transform: 'translateX(0px)' })
+  //             )
+  //           ),
+  //         ],
+  //         { optional: true }
+  //       ),
+  //       query(
+  //         ':leave',
+  //         animate(
+  //           '300ms',
+  //           style({ transform: 'translateX(100px)', opacity: 0 })
+  //         ),
+  //         {
+  //           optional: true,
+  //         }
+  //       ),
+  //     ]),
+  //   ]),
+  // ],
 })
 export class RecipesFormComponent {
   editMode: boolean = false;

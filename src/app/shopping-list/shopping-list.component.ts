@@ -2,12 +2,14 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   trigger,
-  state,
+  // state,
   style,
   animate,
   transition,
-  keyframes,
-  group,
+  query,
+  stagger,
+  // keyframes,
+  // group,
 } from '@angular/animations';
 
 import { Ingredient } from '../shared/models/ingredient.model';
@@ -21,33 +23,60 @@ import * as fromApp from '../shared/store/app.reducer';
   styleUrls: ['./shopping-list.component.css'],
   animations: [
     trigger('shoppingListAnimation', [
-      state(
-        'in',
-        style({
-          opacity: 1,
-          transform: 'translateX(0)',
-        })
-      ),
-      transition('void => *', [
-        style({
-          opacity: 0,
-          transform: 'translateX(100px)',
-          color: '#008000',
-          backgroundColor: '#dcffdc',
-        }),
-        animate(500),
-      ]),
-      transition('* => void', [
-        animate(
-          500,
-          style({
-            transform: 'translateX(-100px)',
-            opacity: 0,
-            color: '#ff0000',
-            backgroundColor: '#fff1f1',
-          })
+      transition('* <=> *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateX(100px)' }),
+            stagger(
+              '100ms',
+              animate(
+                '600ms ease-in-out',
+                style({ opacity: 1, transform: 'translateX(0px)' })
+              )
+            ),
+          ],
+          { optional: true }
+        ),
+        query(
+          ':leave',
+          animate(
+            '300ms',
+            style({ transform: 'translateX(100px)', opacity: 0 })
+          ),
+          {
+            optional: true,
+          }
         ),
       ]),
+
+      // state(
+      //   'in',
+      //   style({
+      //     opacity: 1,
+      //     transform: 'translateX(0)',
+      //   })
+      // ),
+      // transition('void => *', [
+      //   style({
+      //     opacity: 0,
+      //     transform: 'translateX(100px)',
+      //     color: '#008000',
+      //     backgroundColor: '#dcffdc',
+      //   }),
+      //   animate(500),
+      // ]),
+      // transition('* => void', [
+      //   animate(
+      //     500,
+      //     style({
+      //       transform: 'translateX(-100px)',
+      //       opacity: 0,
+      //       color: '#ff0000',
+      //       backgroundColor: '#fff1f1',
+      //     })
+      //   ),
+      // ]),
     ]),
   ],
   // providers: [ShoppingListService]

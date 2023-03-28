@@ -11,6 +11,10 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
+      <div class="backdrop" *ngIf="isChangingRoute"></div>
+      <div class="spinner" *ngIf="isChangingRoute">
+        <app-loading></app-loading>
+      </div>
       <router-outlet></router-outlet>
     </div>
   </div>

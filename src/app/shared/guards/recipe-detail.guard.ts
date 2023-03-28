@@ -48,6 +48,11 @@ export class RecipeDetailGuard
     | boolean
     | UrlTree {
     // const recipe = this.recipeService.getRecipe(+route.params['id']);
+    // if (!recipe) {
+    //   return this.checkRecipeDetail(+route.params['id']);
+    // } else {
+    //   return true;
+    // }
     let recipes: Recipe[] = [];
     this.storeSub = this.store
       .select('recipes')

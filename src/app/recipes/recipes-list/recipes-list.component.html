@@ -3,12 +3,12 @@
     <button class="btn btn-success" (click)="onClick()">افزودن دستور پخت</button>
   </div>
 </div>
-<hr>
-<div class="row">
+<hr *ngIf="recipes.length !== 0">
+<div class="row" *ngIf="recipes.length !== 0">
   <div class="col-12">
-    <div class="list-group">
+    <div class="list-group" [@recipesAnimation]="recipes.length">
       <!-- <app-recipes-item *ngFor="let recipeItem of recipes;" [recipe]="recipeItem"></app-recipes-item> -->
-      <app-recipes-item *ngFor="let recipeItem of recipes; let i = index" [recipe]="recipeItem"
+      <app-recipes-item  *ngFor="let recipeItem of recipes; let i = index" [recipe]="recipeItem"
         [recipeId]="i"></app-recipes-item>
     </div>
     <!-- <app-recipes-item></app-recipes-item> -->
