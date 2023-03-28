@@ -1,5 +1,6 @@
 import { Store } from '@ngrx/store';
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 // import { RecipeService } from './shared/services/recipe.service';
 // import { DataStorageService } from './shared/services/data-storage.service';
@@ -20,12 +21,15 @@ export class AppComponent {
 
   constructor(
     // private authService: AuthService,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   ngOnInit(): void {
     // this.authService.autoLogin();
-    this.store.dispatch(new AuthActions.AutoLogin());
+    if (isPlatformBrowser(this.platformId)) {
+      this.store.dispatch(new AuthActions.AutoLogin());
+    }
   }
 
   // constructor(

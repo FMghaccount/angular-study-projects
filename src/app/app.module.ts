@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment.development';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
     SharedModule,
     CoreModule,
