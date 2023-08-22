@@ -1,4 +1,8 @@
-import { Observable, Subscription, of } from 'rxjs';
+import {
+  // Observable,
+  Subscription,
+  // of
+} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -23,7 +27,7 @@ import * as fromApp from './shared/store/app.reducer';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnDestroy, OnInit {
-  loading$: Observable<boolean> = of(false);
+  // loading$: Observable<boolean> = of(false);
   isChangingRoute: boolean = false;
   routeEventSub: Subscription;
   timerSub;

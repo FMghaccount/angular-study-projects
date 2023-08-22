@@ -8,7 +8,7 @@
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
   z-index: 200;
-  background-color: wheat;
+  /* background-color: wheat; */
 }
 
 @keyframes rotation {

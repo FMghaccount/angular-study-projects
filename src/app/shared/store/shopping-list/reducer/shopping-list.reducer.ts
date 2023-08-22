@@ -62,6 +62,8 @@ export const ShoppingListReducer = (
     //     editedIngredientIndex: -1
     //   }
     case ShoppingListActions.UPDATE_INGREDIENT:
+      console.log(state.ingredients[state.editedIngredientIndex]);
+
       const ingredient = state.ingredients[state.editedIngredientIndex];
       const updatedIngredient = {
         ...ingredient,
@@ -77,6 +79,28 @@ export const ShoppingListReducer = (
         editedIngredientIndex: -1,
       };
 
+    case ShoppingListActions.UPDATE_INGREDIENT_WITH_ITEM_INDEX:
+      // console.log(state.ingredients[state.editedIngredientIndex]);
+
+      const ingredientWithIndex =
+        state.ingredients[state.editedIngredientIndex];
+      let newItem = JSON.parse(JSON.stringify(ingredientWithIndex));
+      newItem.amount = action.payload.amount + newItem.amount;
+      // const updatedIngredientWithIndex = {
+      //   ...ingredient,
+      //   amount: newItem.amount,
+      // };
+      // console.log(updatedIngredientWithIndex);
+
+      const updatedIngredientsWithIndex = [...state.ingredients];
+      updatedIngredientsWithIndex[state.editedIngredientIndex] = newItem;
+
+      return {
+        ...state,
+        ingredients: updatedIngredientsWithIndex,
+        editedIngredient: null,
+        editedIngredientIndex: -1,
+      };
     // case ShoppingListActions.DELETE_INGREDIENT:
     //   return {
     //     ...state,

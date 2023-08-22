@@ -7,29 +7,31 @@ import { NgForm } from '@angular/forms';
 
 import { Ingredient } from '../../shared/models/ingredient.model';
 // import { ShoppingListService } from './../../shared/services/shopping-list.service';
-import * as ShoppingListActions from '../../shared/store/shopping-list/action/shopping-list.actions'
-import * as fromApp from '../../shared/store/app.reducer'
+import * as ShoppingListActions from '../../shared/store/shopping-list/action/shopping-list.actions';
+import * as fromApp from '../../shared/store/app.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
-  styleUrls: ['./shopping-edit.component.css']
+  styleUrls: ['./shopping-edit.component.css'],
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   // @ViewChild('amountInput') amountInput: ElementRef;
   // ingredientName: string;
 
   @ViewChild('form') formData: NgForm;
-  editMode: boolean = false
+  editMode: boolean = false;
   ingredient: Ingredient;
+  ingredients: Ingredient[];
   ingredientId: number;
-  subscription: Subscription
-  timeoutSub
+  subscription: Subscription;
+  timeoutSub;
   constructor(
     // private shoppingListService: ShoppingListService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private store: Store<fromApp.AppState>) { }
+    private store: Store<fromApp.AppState>
+  ) {}
 
   // onAddIngredients() {
   //   if (this.ingredientName && this.amountInput.nativeElement.value && this.amountInput.nativeElement.value > 0) {
@@ -39,72 +41,101 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   //   else return
   // }
 
-
   ngOnInit() {
     // console.log(this.activatedRoute.snapshot.params['id']);
     this.activatedRoute.queryParams.subscribe((queryParam: Params) => {
       if (queryParam['id'] !== undefined) {
         this.editMode = true;
         this.ingredientId = +queryParam['id'];
-        this.store.dispatch(new ShoppingListActions.startEdit(this.ingredientId))
+        this.store.dispatch(
+          new ShoppingListActions.startEdit(this.ingredientId)
+        );
         // if (this.formData)
         //   this.formData.form.setValue({
         //     name: this.shoppingListService.getIngredient(+queryParam['id']).name,
         //     amount: this.shoppingListService.getIngredient(+queryParam['id']).amount
         //   })
-      }
-      else {
-        this.editMode = false;
-      }
-    })
-
-    this.subscription = this.store.select('shoppingList').subscribe(stateData => {
-      if (stateData.editedIngredientIndex > -1) {
-        this.editMode = true;
-        if (this.formData)
-          this.formData.form.patchValue({
-            name: stateData.editedIngredient.name,
-            amount: stateData.editedIngredient.amount
-          })
       } else {
         this.editMode = false;
       }
-    })
+    });
+
+    this.subscription = this.store
+      .select('shoppingList')
+      .subscribe((stateData) => {
+        // console.log(stateData.ingredients);
+        this.ingredients = stateData.ingredients;
+        if (stateData.editedIngredientIndex > -1) {
+          this.editMode = true;
+          if (this.formData)
+            this.formData.form.patchValue({
+              name: stateData.editedIngredient.name,
+              amount: stateData.editedIngredient.amount,
+            });
+        } else {
+          this.editMode = false;
+        }
+      });
   }
 
   ngAfterViewInit(): void {
     if (this.ingredientId !== undefined) {
       this.editMode = true;
       this.timeoutSub = setTimeout(() => {
-        this.store.dispatch(new ShoppingListActions.startEdit(this.ingredientId))
+        this.store.dispatch(
+          new ShoppingListActions.startEdit(this.ingredientId)
+        );
         this.editMode = true;
-        this.subscription = this.store.select('shoppingList').subscribe(stateData => {
-          if (stateData.editedIngredientIndex > -1) {
-            this.formData.form.patchValue({
-              name: stateData.editedIngredient.name,
-              amount: stateData.editedIngredient.amount
-            })
-          } else {
-            this.editMode = false;
-          }
-        })
-      }, 100)
+        this.subscription = this.store
+          .select('shoppingList')
+          .subscribe((stateData) => {
+            if (stateData.editedIngredientIndex > -1) {
+              this.formData.form.patchValue({
+                name: stateData.editedIngredient.name,
+                amount: stateData.editedIngredient.amount,
+              });
+            } else {
+              this.editMode = false;
+            }
+          });
+      }, 100);
     }
   }
 
   onSubmit() {
     if (this.formData.value.name && this.formData.value.amount > 0) {
-      this.ingredient = new Ingredient(this.formData.value.name, +this.formData.value.amount)
+      this.ingredient = new Ingredient(
+        this.formData.value.name,
+        +this.formData.value.amount
+      );
       // if (!this.editMode) this.shoppingListService.addIngredients(this.ingredient)
       if (!this.editMode) {
         // this.editMode = false;
-        this.store.dispatch(new ShoppingListActions.addIngredient(this.ingredient))
-      }
-      else {
+        let result = this.ingredients.findIndex(
+          (item) => item.name === this.formData.value.name
+        );
+
+        if (result >= 0) {
+          this.store.dispatch(new ShoppingListActions.startEdit(result));
+          this.store.dispatch(
+            new ShoppingListActions.updateIngredientWithItemIndex(
+              this.ingredient
+            )
+          );
+        } else {
+          this.store.dispatch(
+            new ShoppingListActions.addIngredient(this.ingredient)
+          );
+        }
+      } else {
         // this.shoppingListService.editIngredient(this.ingredientId, this.ingredient)
         // this.store.dispatch(new ShoppingListActions.updateIngredient({ index: this.ingredientId, ingredient: this.ingredient }))
         // this.editMode = true;
-        this.store.dispatch(new ShoppingListActions.updateIngredient(this.ingredient))
+        console.log(`edit`);
+
+        this.store.dispatch(
+          new ShoppingListActions.updateIngredient(this.ingredient)
+        );
       }
     }
     this.formData.reset();
@@ -116,12 +147,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     if (this.ingredientId !== undefined) {
       // this.shoppingListService.removeIngredient(+this.ingredientId);
       // this.store.dispatch(new ShoppingListActions.deleteIngredient(+this.ingredientId))
-      this.store.dispatch(new ShoppingListActions.deleteIngredient())
+      this.store.dispatch(new ShoppingListActions.deleteIngredient());
       this.formData.reset();
       this.editMode = false;
       this.router.navigate(['/shopping-list']);
     } else {
-      return
+      return;
     }
   }
 
@@ -129,15 +160,14 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.formData.reset();
     this.editMode = false;
     this.store.dispatch(new ShoppingListActions.stopEdit());
-    if (this.timeoutSub) clearTimeout(this.timeoutSub)
+    if (this.timeoutSub) clearTimeout(this.timeoutSub);
     this.router.navigate(['/shopping-list']);
   }
 
   ngOnDestroy() {
     this.editMode = false;
-    if (this.timeoutSub) clearTimeout(this.timeoutSub)
+    if (this.timeoutSub) clearTimeout(this.timeoutSub);
     if (this.subscription) this.subscription.unsubscribe();
     this.store.dispatch(new ShoppingListActions.stopEdit());
   }
-
 }
